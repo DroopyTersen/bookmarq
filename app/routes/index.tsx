@@ -1,5 +1,7 @@
+import { json, LoaderArgs, redirect } from "@remix-run/node";
 import { Link } from "@remix-run/react";
 import { useState } from "react";
+import { authSession } from "~/features/auth/authSession.server";
 import { MainContentPadded } from "~/features/layout/AppLayout";
 import {
   InputField,
@@ -9,6 +11,15 @@ import {
 import { DeleteButton } from "~/toolkit/components/modal/DeleteButton";
 import { useEnvVars } from "~/toolkit/remix/useEnvVar";
 
+export const loader = async ({ request }: LoaderArgs) => {
+  let auth = await authSession.get(request);
+  let url = new URL(request.url);
+  let returnTo = url.pathname + url.search;
+  if (!auth) {
+    return redirect("/login?returnTo=" + returnTo);
+  }
+  return json({ bookmarks: [] });
+};
 export default function Index() {
   let config = useEnvVars();
   const [count, setCount] = useState(0);
