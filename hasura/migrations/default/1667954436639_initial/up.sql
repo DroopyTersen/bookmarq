@@ -40,9 +40,9 @@ CREATE TRIGGER "set_public_users_updated_at" BEFORE UPDATE
   ON "public"."users" FOR EACH ROW EXECUTE PROCEDURE "public"."set_current_timestamp_updated_at"();
 
 
--- WORKSPACES TABLE
+-- collections TABLE
 CREATE TABLE
-  "public"."workspaces" (
+  "public"."collections" (
     "id" text NOT NULL DEFAULT generate_short_id(),
     "name" text NOT NULL,
     "created_at" timestamptz NOT NULL DEFAULT now(),
@@ -50,27 +50,27 @@ CREATE TABLE
     PRIMARY KEY ("id")
   );
 
--- CREATE TRIGGER workspaces_insert_id BEFORE INSERT ON public.workspaces FOR EACH ROW EXECUTE FUNCTION public.generate_short_id();
-CREATE TRIGGER "set_public_workspaces_updated_at" BEFORE UPDATE
-  ON "public"."workspaces" FOR EACH ROW EXECUTE PROCEDURE "public"."set_current_timestamp_updated_at"();
+-- CREATE TRIGGER collections_insert_id BEFORE INSERT ON public.collections FOR EACH ROW EXECUTE FUNCTION public.generate_short_id();
+CREATE TRIGGER "set_public_collections_updated_at" BEFORE UPDATE
+  ON "public"."collections" FOR EACH ROW EXECUTE PROCEDURE "public"."set_current_timestamp_updated_at"();
 
 
--- WORKSPACE ROLES TABLE
+-- collection ROLES TABLE
 CREATE TABLE
-  "public"."workspace_roles" (
-    "workspace_id" text NOT NULL,
+  "public"."collection_roles" (
+    "collection_id" text NOT NULL,
     "user_id" uuid NOT NULL,
     "role" text NOT NULL,
     "created_at" timestamptz NOT NULL DEFAULT now(),
     "updated_at" timestamptz NOT NULL DEFAULT now(),
-    PRIMARY KEY ("workspace_id", "user_id"),
+    PRIMARY KEY ("collection_id", "user_id"),
     FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") 
       ON UPDATE cascade 
       ON DELETE cascade,
-    FOREIGN KEY ("workspace_id") REFERENCES "public"."workspaces"("id") 
+    FOREIGN KEY ("collection_id") REFERENCES "public"."collections"("id") 
       ON UPDATE cascade 
       ON DELETE cascade
   );
 
-CREATE TRIGGER "set_public_workspace_roles_updated_at" BEFORE UPDATE
-  ON "public"."workspace_roles" FOR EACH ROW EXECUTE PROCEDURE "public"."set_current_timestamp_updated_at"();
+CREATE TRIGGER "set_public_collection_roles_updated_at" BEFORE UPDATE
+  ON "public"."collection_roles" FOR EACH ROW EXECUTE PROCEDURE "public"."set_current_timestamp_updated_at"();

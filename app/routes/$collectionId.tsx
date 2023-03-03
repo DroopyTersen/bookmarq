@@ -1,21 +1,21 @@
 import { json, LoaderArgs } from "@remix-run/node";
 import { requireAuthenticatedLoader } from "~/features/auth/auth.remix.server";
 import { MainContentPadded } from "~/features/layout/AppLayout";
-import { useCurrentWorkspace } from "~/features/layout/WorkspacePicker";
+import { useCurrentCollection } from "~/features/layout/CollectionPicker";
 import { AppErrorBoundary } from "~/toolkit/components/errors/AppErrorBoundary";
 
 export const loader = async ({ request, params }: LoaderArgs) => {
   let { userId } = await requireAuthenticatedLoader(request);
-  return json({ message: "WorkspaceDetails" });
+  return json({ message: "Collection Details" });
 };
 
-export default function WorkspaceDetailsRoute() {
-  let workspace = useCurrentWorkspace();
+export default function CollectionDetailsRoute() {
+  let collection = useCurrentCollection();
   return (
     <MainContentPadded>
-      <h1 className="text-secondary">{workspace?.name}</h1>
+      <h1 className="text-secondary">{collection?.name}</h1>
       <div>
-        <pre>{JSON.stringify(workspace, null, 2)}</pre>
+        <pre>{JSON.stringify(collection, null, 2)}</pre>
       </div>
     </MainContentPadded>
   );

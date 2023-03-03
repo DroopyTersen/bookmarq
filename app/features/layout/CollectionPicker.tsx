@@ -3,29 +3,29 @@ import { useMemo } from "react";
 import { Select } from "~/toolkit/components/forms";
 import { useCurrentUser } from "../auth/useCurrentUser";
 
-export const WorkspacePicker = () => {
+export const CollectionPicker = () => {
   let currentUser = useCurrentUser();
-  let { workspaceId } = useParams();
+  let { collectionId } = useParams();
   let navigate = useNavigate();
   if (!currentUser) return null;
-  let workspaces = useMemo(() => {
+  let collections = useMemo(() => {
     return (
       currentUser?.roles?.map((role) => {
         return {
-          label: role.workspace.name,
-          value: role.workspace.id,
+          label: role.collection.name,
+          value: role.collection.id,
         };
       }) || []
     );
   }, [currentUser?.roles]);
   return (
     <Select
-      value={workspaceId || ""}
-      key={workspaceId || "none"}
+      value={collectionId || ""}
+      key={collectionId || "none"}
       onChange={(e) => {
         e.preventDefault();
         let targetPage = e.currentTarget.value || "";
-        if (targetPage === "new-workspace") {
+        if (targetPage === "new-collection") {
           targetPage =
             targetPage +
             `?returnTo=${encodeURIComponent(
@@ -35,35 +35,35 @@ export const WorkspacePicker = () => {
         navigate("/" + targetPage);
       }}
     >
-      {!workspaceId && (
+      {!collectionId && (
         <option disabled value="">
-          -- Select a workspace --
+          -- Select a collection --
         </option>
       )}
-      <optgroup label="Your workspaces">
-        {workspaces.map((workspace) => (
-          <option key={workspace.value} value={workspace.value}>
-            {workspace.label}
+      <optgroup label="Your collections">
+        {collections.map((collection) => (
+          <option key={collection.value} value={collection.value}>
+            {collection.label}
           </option>
         ))}
       </optgroup>
       <optgroup label="More">
-        <option value="new-workspace">+ Create New</option>
+        <option value="new-collection">+ Create New</option>
       </optgroup>
     </Select>
   );
 };
 
-export const useCurrentWorkspace = () => {
+export const useCurrentCollection = () => {
   let currentUser = useCurrentUser();
-  let { workspaceId } = useParams();
-  let currentWorkspace = useMemo(() => {
+  let { collectionId } = useParams();
+  let current = useMemo(() => {
     return currentUser?.roles?.find(
-      (role) => role.workspace.id === workspaceId
+      (role) => role.collection.id === collectionId
     );
-  }, [currentUser?.roles, workspaceId]);
+  }, [currentUser?.roles, collectionId]);
   return {
-    role: currentWorkspace?.role,
-    ...currentWorkspace?.workspace,
+    role: current?.role,
+    ...current?.collection,
   };
 };
