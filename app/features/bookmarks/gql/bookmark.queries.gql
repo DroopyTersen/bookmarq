@@ -1,0 +1,29 @@
+fragment BookmarkThin on Bookmarks {
+  id
+  title
+  image
+  description
+  createdAt
+}
+
+query GetBookmarksByCollection($collectionId: String!) {
+  bookmarks(
+    where: { collectionId: { _eq: $collectionId } }
+    orderBy: { createdAt: DESC }
+  ) {
+    ...BookmarkThin
+  }
+}
+
+query GetBookmarksByUser($userId: uuid!) {
+  bookmarks(
+    where: { createdById: { _eq: $userId } }
+    orderBy: { createdAt: DESC }
+  ) {
+    ...BookmarkThin
+    collection {
+      name
+      id
+    }
+  }
+}

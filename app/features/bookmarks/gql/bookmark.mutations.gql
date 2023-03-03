@@ -1,0 +1,11 @@
+mutation InsertBookmark($input: BookmarksInsertInput!) {
+  bookmark: insertBookmarksOne(object: $input) {
+    id
+  }
+}
+
+mutation UpdateBookmark($id: String!, $input: BookmarksSetInput!) {
+  bookmark: updateBookmarksByPk(_set: $input, pk_columns: { id: $id }) {
+    id
+  }
+}
