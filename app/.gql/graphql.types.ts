@@ -11,8 +11,307 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  jsonb: any;
   timestamptz: any;
   uuid: any;
+};
+
+/** columns and relationships of "bookmarks" */
+export type Bookmarks = {
+  __typename?: 'Bookmarks';
+  articleData?: Maybe<Scalars['jsonb']>;
+  /** An object relationship */
+  collection: Collections;
+  collectionId: Scalars['String'];
+  createdAt: Scalars['timestamptz'];
+  /** An object relationship */
+  createdBy: Users;
+  createdById: Scalars['uuid'];
+  description?: Maybe<Scalars['String']>;
+  embedData?: Maybe<Scalars['jsonb']>;
+  html?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
+  image?: Maybe<Scalars['String']>;
+  text?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+  updatedAt: Scalars['timestamptz'];
+  url: Scalars['String'];
+};
+
+
+/** columns and relationships of "bookmarks" */
+export type BookmarksArticleDataArgs = {
+  path?: InputMaybe<Scalars['String']>;
+};
+
+
+/** columns and relationships of "bookmarks" */
+export type BookmarksEmbedDataArgs = {
+  path?: InputMaybe<Scalars['String']>;
+};
+
+/** aggregated selection of "bookmarks" */
+export type BookmarksAggregate = {
+  __typename?: 'BookmarksAggregate';
+  aggregate?: Maybe<BookmarksAggregateFields>;
+  nodes: Array<Bookmarks>;
+};
+
+/** aggregate fields of "bookmarks" */
+export type BookmarksAggregateFields = {
+  __typename?: 'BookmarksAggregateFields';
+  count: Scalars['Int'];
+  max?: Maybe<BookmarksMaxFields>;
+  min?: Maybe<BookmarksMinFields>;
+};
+
+
+/** aggregate fields of "bookmarks" */
+export type BookmarksAggregateFieldsCountArgs = {
+  columns?: InputMaybe<Array<BookmarksSelectColumn>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type BookmarksAppendInput = {
+  articleData?: InputMaybe<Scalars['jsonb']>;
+  embedData?: InputMaybe<Scalars['jsonb']>;
+};
+
+/** Boolean expression to filter rows from the table "bookmarks". All fields are combined with a logical 'AND'. */
+export type BookmarksBoolExp = {
+  _and?: InputMaybe<Array<BookmarksBoolExp>>;
+  _not?: InputMaybe<BookmarksBoolExp>;
+  _or?: InputMaybe<Array<BookmarksBoolExp>>;
+  articleData?: InputMaybe<JsonbComparisonExp>;
+  collection?: InputMaybe<CollectionsBoolExp>;
+  collectionId?: InputMaybe<StringComparisonExp>;
+  createdAt?: InputMaybe<TimestamptzComparisonExp>;
+  createdBy?: InputMaybe<UsersBoolExp>;
+  createdById?: InputMaybe<UuidComparisonExp>;
+  description?: InputMaybe<StringComparisonExp>;
+  embedData?: InputMaybe<JsonbComparisonExp>;
+  html?: InputMaybe<StringComparisonExp>;
+  id?: InputMaybe<StringComparisonExp>;
+  image?: InputMaybe<StringComparisonExp>;
+  text?: InputMaybe<StringComparisonExp>;
+  title?: InputMaybe<StringComparisonExp>;
+  updatedAt?: InputMaybe<TimestamptzComparisonExp>;
+  url?: InputMaybe<StringComparisonExp>;
+};
+
+/** unique or primary key constraints on table "bookmarks" */
+export enum BookmarksConstraint {
+  /** unique or primary key constraint on columns "id" */
+  BookmarksPkey = 'bookmarks_pkey'
+}
+
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type BookmarksDeleteAtPathInput = {
+  articleData?: InputMaybe<Array<Scalars['String']>>;
+  embedData?: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type BookmarksDeleteElemInput = {
+  articleData?: InputMaybe<Scalars['Int']>;
+  embedData?: InputMaybe<Scalars['Int']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type BookmarksDeleteKeyInput = {
+  articleData?: InputMaybe<Scalars['String']>;
+  embedData?: InputMaybe<Scalars['String']>;
+};
+
+/** input type for inserting data into table "bookmarks" */
+export type BookmarksInsertInput = {
+  articleData?: InputMaybe<Scalars['jsonb']>;
+  collection?: InputMaybe<CollectionsObjRelInsertInput>;
+  collectionId?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  createdBy?: InputMaybe<UsersObjRelInsertInput>;
+  createdById?: InputMaybe<Scalars['uuid']>;
+  description?: InputMaybe<Scalars['String']>;
+  embedData?: InputMaybe<Scalars['jsonb']>;
+  html?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']>;
+  image?: InputMaybe<Scalars['String']>;
+  text?: InputMaybe<Scalars['String']>;
+  title?: InputMaybe<Scalars['String']>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']>;
+  url?: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type BookmarksMaxFields = {
+  __typename?: 'BookmarksMaxFields';
+  collectionId?: Maybe<Scalars['String']>;
+  createdAt?: Maybe<Scalars['timestamptz']>;
+  createdById?: Maybe<Scalars['uuid']>;
+  description?: Maybe<Scalars['String']>;
+  html?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+  image?: Maybe<Scalars['String']>;
+  text?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+  updatedAt?: Maybe<Scalars['timestamptz']>;
+  url?: Maybe<Scalars['String']>;
+};
+
+/** aggregate min on columns */
+export type BookmarksMinFields = {
+  __typename?: 'BookmarksMinFields';
+  collectionId?: Maybe<Scalars['String']>;
+  createdAt?: Maybe<Scalars['timestamptz']>;
+  createdById?: Maybe<Scalars['uuid']>;
+  description?: Maybe<Scalars['String']>;
+  html?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+  image?: Maybe<Scalars['String']>;
+  text?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+  updatedAt?: Maybe<Scalars['timestamptz']>;
+  url?: Maybe<Scalars['String']>;
+};
+
+/** response of any mutation on the table "bookmarks" */
+export type BookmarksMutationResponse = {
+  __typename?: 'BookmarksMutationResponse';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Bookmarks>;
+};
+
+/** on_conflict condition type for table "bookmarks" */
+export type BookmarksOnConflict = {
+  constraint: BookmarksConstraint;
+  update_columns?: Array<BookmarksUpdateColumn>;
+  where?: InputMaybe<BookmarksBoolExp>;
+};
+
+/** Ordering options when selecting data from "bookmarks". */
+export type BookmarksOrderBy = {
+  articleData?: InputMaybe<OrderBy>;
+  collection?: InputMaybe<CollectionsOrderBy>;
+  collectionId?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  createdBy?: InputMaybe<UsersOrderBy>;
+  createdById?: InputMaybe<OrderBy>;
+  description?: InputMaybe<OrderBy>;
+  embedData?: InputMaybe<OrderBy>;
+  html?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  image?: InputMaybe<OrderBy>;
+  text?: InputMaybe<OrderBy>;
+  title?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+  url?: InputMaybe<OrderBy>;
+};
+
+/** primary key columns input for table: bookmarks */
+export type BookmarksPkColumnsInput = {
+  id: Scalars['String'];
+};
+
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type BookmarksPrependInput = {
+  articleData?: InputMaybe<Scalars['jsonb']>;
+  embedData?: InputMaybe<Scalars['jsonb']>;
+};
+
+/** select columns of table "bookmarks" */
+export enum BookmarksSelectColumn {
+  /** column name */
+  ArticleData = 'articleData',
+  /** column name */
+  CollectionId = 'collectionId',
+  /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
+  CreatedById = 'createdById',
+  /** column name */
+  Description = 'description',
+  /** column name */
+  EmbedData = 'embedData',
+  /** column name */
+  Html = 'html',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Image = 'image',
+  /** column name */
+  Text = 'text',
+  /** column name */
+  Title = 'title',
+  /** column name */
+  UpdatedAt = 'updatedAt',
+  /** column name */
+  Url = 'url'
+}
+
+/** input type for updating data in table "bookmarks" */
+export type BookmarksSetInput = {
+  articleData?: InputMaybe<Scalars['jsonb']>;
+  collectionId?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  createdById?: InputMaybe<Scalars['uuid']>;
+  description?: InputMaybe<Scalars['String']>;
+  embedData?: InputMaybe<Scalars['jsonb']>;
+  html?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']>;
+  image?: InputMaybe<Scalars['String']>;
+  text?: InputMaybe<Scalars['String']>;
+  title?: InputMaybe<Scalars['String']>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']>;
+  url?: InputMaybe<Scalars['String']>;
+};
+
+/** update columns of table "bookmarks" */
+export enum BookmarksUpdateColumn {
+  /** column name */
+  ArticleData = 'articleData',
+  /** column name */
+  CollectionId = 'collectionId',
+  /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
+  CreatedById = 'createdById',
+  /** column name */
+  Description = 'description',
+  /** column name */
+  EmbedData = 'embedData',
+  /** column name */
+  Html = 'html',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Image = 'image',
+  /** column name */
+  Text = 'text',
+  /** column name */
+  Title = 'title',
+  /** column name */
+  UpdatedAt = 'updatedAt',
+  /** column name */
+  Url = 'url'
+}
+
+export type BookmarksUpdates = {
+  /** append existing jsonb value of filtered columns with new jsonb value */
+  _append?: InputMaybe<BookmarksAppendInput>;
+  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+  _deleteAtPath?: InputMaybe<BookmarksDeleteAtPathInput>;
+  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+  _deleteElem?: InputMaybe<BookmarksDeleteElemInput>;
+  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
+  _deleteKey?: InputMaybe<BookmarksDeleteKeyInput>;
+  /** prepend existing jsonb value of filtered columns with new jsonb value */
+  _prepend?: InputMaybe<BookmarksPrependInput>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<BookmarksSetInput>;
+  where: BookmarksBoolExp;
 };
 
 /** columns and relationships of "collection_roles" */
@@ -389,6 +688,34 @@ export type IntComparisonExp = {
   _nin?: InputMaybe<Array<Scalars['Int']>>;
 };
 
+export type JsonbCastExp = {
+  String?: InputMaybe<StringComparisonExp>;
+};
+
+/** Boolean expression to compare columns of type "jsonb". All fields are combined with logical 'AND'. */
+export type JsonbComparisonExp = {
+  _cast?: InputMaybe<JsonbCastExp>;
+  /** is the column contained in the given json value */
+  _containedIn?: InputMaybe<Scalars['jsonb']>;
+  /** does the column contain the given json value at the top level */
+  _contains?: InputMaybe<Scalars['jsonb']>;
+  _eq?: InputMaybe<Scalars['jsonb']>;
+  _gt?: InputMaybe<Scalars['jsonb']>;
+  _gte?: InputMaybe<Scalars['jsonb']>;
+  /** does the string exist as a top-level key in the column */
+  _hasKey?: InputMaybe<Scalars['String']>;
+  /** do all of these strings exist as top-level keys in the column */
+  _hasKeysAll?: InputMaybe<Array<Scalars['String']>>;
+  /** do any of these strings exist as top-level keys in the column */
+  _hasKeysAny?: InputMaybe<Array<Scalars['String']>>;
+  _in?: InputMaybe<Array<Scalars['jsonb']>>;
+  _isNull?: InputMaybe<Scalars['Boolean']>;
+  _lt?: InputMaybe<Scalars['jsonb']>;
+  _lte?: InputMaybe<Scalars['jsonb']>;
+  _neq?: InputMaybe<Scalars['jsonb']>;
+  _nin?: InputMaybe<Array<Scalars['jsonb']>>;
+};
+
 /** column ordering options */
 export enum OrderBy {
   /** in ascending order, nulls last */
@@ -664,6 +991,31 @@ export type UuidComparisonExp = {
   _nin?: InputMaybe<Array<Scalars['uuid']>>;
 };
 
+/** Streaming cursor of the table "bookmarks" */
+export type Bookmarks_StreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: Bookmarks_StreamCursorValueInput;
+  /** cursor ordering */
+  ordering?: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Bookmarks_StreamCursorValueInput = {
+  articleData?: InputMaybe<Scalars['jsonb']>;
+  collectionId?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  createdById?: InputMaybe<Scalars['uuid']>;
+  description?: InputMaybe<Scalars['String']>;
+  embedData?: InputMaybe<Scalars['jsonb']>;
+  html?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']>;
+  image?: InputMaybe<Scalars['String']>;
+  text?: InputMaybe<Scalars['String']>;
+  title?: InputMaybe<Scalars['String']>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']>;
+  url?: InputMaybe<Scalars['String']>;
+};
+
 export type Collection_Roles_Aggregate_Bool_Exp = {
   count?: InputMaybe<Collection_Roles_Aggregate_Bool_Exp_Count>;
 };
@@ -729,6 +1081,10 @@ export type Collections_StreamCursorValueInput = {
 /** mutation root */
 export type Mutation_Root = {
   __typename?: 'mutation_root';
+  /** delete data from the table: "bookmarks" */
+  deleteBookmarks?: Maybe<BookmarksMutationResponse>;
+  /** delete single row from the table: "bookmarks" */
+  deleteBookmarksByPk?: Maybe<Bookmarks>;
   /** delete data from the table: "collection_roles" */
   deleteCollectionRoles?: Maybe<CollectionRolesMutationResponse>;
   /** delete single row from the table: "collection_roles" */
@@ -741,6 +1097,10 @@ export type Mutation_Root = {
   deleteUsers?: Maybe<UsersMutationResponse>;
   /** delete single row from the table: "users" */
   deleteUsersByPk?: Maybe<Users>;
+  /** insert data into the table: "bookmarks" */
+  insertBookmarks?: Maybe<BookmarksMutationResponse>;
+  /** insert a single row into the table: "bookmarks" */
+  insertBookmarksOne?: Maybe<Bookmarks>;
   /** insert data into the table: "collection_roles" */
   insertCollectionRoles?: Maybe<CollectionRolesMutationResponse>;
   /** insert a single row into the table: "collection_roles" */
@@ -753,6 +1113,12 @@ export type Mutation_Root = {
   insertUsers?: Maybe<UsersMutationResponse>;
   /** insert a single row into the table: "users" */
   insertUsersOne?: Maybe<Users>;
+  /** update data of the table: "bookmarks" */
+  updateBookmarks?: Maybe<BookmarksMutationResponse>;
+  /** update single row of the table: "bookmarks" */
+  updateBookmarksByPk?: Maybe<Bookmarks>;
+  /** update multiples rows of table: "bookmarks" */
+  updateBookmarksMany?: Maybe<Array<Maybe<BookmarksMutationResponse>>>;
   /** update data of the table: "collection_roles" */
   updateCollectionRoles?: Maybe<CollectionRolesMutationResponse>;
   /** update single row of the table: "collection_roles" */
@@ -771,6 +1137,18 @@ export type Mutation_Root = {
   updateUsersByPk?: Maybe<Users>;
   /** update multiples rows of table: "users" */
   updateUsersMany?: Maybe<Array<Maybe<UsersMutationResponse>>>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteBookmarksArgs = {
+  where: BookmarksBoolExp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteBookmarksByPkArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -808,6 +1186,20 @@ export type Mutation_RootDeleteUsersArgs = {
 /** mutation root */
 export type Mutation_RootDeleteUsersByPkArgs = {
   id: Scalars['uuid'];
+};
+
+
+/** mutation root */
+export type Mutation_RootInsertBookmarksArgs = {
+  objects: Array<BookmarksInsertInput>;
+  onConflict?: InputMaybe<BookmarksOnConflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsertBookmarksOneArgs = {
+  object: BookmarksInsertInput;
+  onConflict?: InputMaybe<BookmarksOnConflict>;
 };
 
 
@@ -850,6 +1242,36 @@ export type Mutation_RootInsertUsersArgs = {
 export type Mutation_RootInsertUsersOneArgs = {
   object: UsersInsertInput;
   onConflict?: InputMaybe<UsersOnConflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateBookmarksArgs = {
+  _append?: InputMaybe<BookmarksAppendInput>;
+  _deleteAtPath?: InputMaybe<BookmarksDeleteAtPathInput>;
+  _deleteElem?: InputMaybe<BookmarksDeleteElemInput>;
+  _deleteKey?: InputMaybe<BookmarksDeleteKeyInput>;
+  _prepend?: InputMaybe<BookmarksPrependInput>;
+  _set?: InputMaybe<BookmarksSetInput>;
+  where: BookmarksBoolExp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateBookmarksByPkArgs = {
+  _append?: InputMaybe<BookmarksAppendInput>;
+  _deleteAtPath?: InputMaybe<BookmarksDeleteAtPathInput>;
+  _deleteElem?: InputMaybe<BookmarksDeleteElemInput>;
+  _deleteKey?: InputMaybe<BookmarksDeleteKeyInput>;
+  _prepend?: InputMaybe<BookmarksPrependInput>;
+  _set?: InputMaybe<BookmarksSetInput>;
+  pk_columns: BookmarksPkColumnsInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateBookmarksManyArgs = {
+  updates: Array<BookmarksUpdates>;
 };
 
 
@@ -914,6 +1336,12 @@ export type Mutation_RootUpdateUsersManyArgs = {
 
 export type Query_Root = {
   __typename?: 'query_root';
+  /** fetch data from the table: "bookmarks" */
+  bookmarks: Array<Bookmarks>;
+  /** fetch aggregated fields from the table: "bookmarks" */
+  bookmarksAggregate: BookmarksAggregate;
+  /** fetch data from the table: "bookmarks" using primary key columns */
+  bookmarksByPk?: Maybe<Bookmarks>;
   /** fetch data from the table: "collection_roles" */
   collectionRoles: Array<CollectionRoles>;
   /** fetch aggregated fields from the table: "collection_roles" */
@@ -932,6 +1360,29 @@ export type Query_Root = {
   usersAggregate: UsersAggregate;
   /** fetch data from the table: "users" using primary key columns */
   usersByPk?: Maybe<Users>;
+};
+
+
+export type Query_RootBookmarksArgs = {
+  distinctOn?: InputMaybe<Array<BookmarksSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<BookmarksOrderBy>>;
+  where?: InputMaybe<BookmarksBoolExp>;
+};
+
+
+export type Query_RootBookmarksAggregateArgs = {
+  distinctOn?: InputMaybe<Array<BookmarksSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<BookmarksOrderBy>>;
+  where?: InputMaybe<BookmarksBoolExp>;
+};
+
+
+export type Query_RootBookmarksByPkArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -1006,6 +1457,14 @@ export type Query_RootUsersByPkArgs = {
 
 export type Subscription_Root = {
   __typename?: 'subscription_root';
+  /** fetch data from the table: "bookmarks" */
+  bookmarks: Array<Bookmarks>;
+  /** fetch aggregated fields from the table: "bookmarks" */
+  bookmarksAggregate: BookmarksAggregate;
+  /** fetch data from the table: "bookmarks" using primary key columns */
+  bookmarksByPk?: Maybe<Bookmarks>;
+  /** fetch data from the table in a streaming manner: "bookmarks" */
+  bookmarksStream: Array<Bookmarks>;
   /** fetch data from the table: "collection_roles" */
   collectionRoles: Array<CollectionRoles>;
   /** fetch aggregated fields from the table: "collection_roles" */
@@ -1030,6 +1489,36 @@ export type Subscription_Root = {
   usersByPk?: Maybe<Users>;
   /** fetch data from the table in a streaming manner: "users" */
   usersStream: Array<Users>;
+};
+
+
+export type Subscription_RootBookmarksArgs = {
+  distinctOn?: InputMaybe<Array<BookmarksSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<BookmarksOrderBy>>;
+  where?: InputMaybe<BookmarksBoolExp>;
+};
+
+
+export type Subscription_RootBookmarksAggregateArgs = {
+  distinctOn?: InputMaybe<Array<BookmarksSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<BookmarksOrderBy>>;
+  where?: InputMaybe<BookmarksBoolExp>;
+};
+
+
+export type Subscription_RootBookmarksByPkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type Subscription_RootBookmarksStreamArgs = {
+  batchSize: Scalars['Int'];
+  cursor: Array<InputMaybe<Bookmarks_StreamCursorInput>>;
+  where?: InputMaybe<BookmarksBoolExp>;
 };
 
 
@@ -1141,6 +1630,37 @@ export type Users_StreamCursorValueInput = {
   updatedAt?: InputMaybe<Scalars['timestamptz']>;
 };
 
+export type InsertBookmarkMutationVariables = Exact<{
+  input: BookmarksInsertInput;
+}>;
+
+
+export type InsertBookmarkMutation = { __typename?: 'mutation_root', bookmark?: { __typename?: 'Bookmarks', id: string } | null };
+
+export type UpdateBookmarkMutationVariables = Exact<{
+  id: Scalars['String'];
+  input: BookmarksSetInput;
+}>;
+
+
+export type UpdateBookmarkMutation = { __typename?: 'mutation_root', bookmark?: { __typename?: 'Bookmarks', id: string } | null };
+
+export type BookmarkThinFragment = { __typename?: 'Bookmarks', id: string, title?: string | null, image?: string | null, description?: string | null, createdAt: any };
+
+export type GetBookmarksByCollectionQueryVariables = Exact<{
+  collectionId: Scalars['String'];
+}>;
+
+
+export type GetBookmarksByCollectionQuery = { __typename?: 'query_root', bookmarks: Array<{ __typename?: 'Bookmarks', id: string, title?: string | null, image?: string | null, description?: string | null, createdAt: any }> };
+
+export type GetBookmarksByUserQueryVariables = Exact<{
+  userId: Scalars['uuid'];
+}>;
+
+
+export type GetBookmarksByUserQuery = { __typename?: 'query_root', bookmarks: Array<{ __typename?: 'Bookmarks', id: string, title?: string | null, image?: string | null, description?: string | null, createdAt: any, collection: { __typename?: 'Collections', name: string, id: string } }> };
+
 export type CreateCollectionMutationVariables = Exact<{
   name: Scalars['String'];
   userId: Scalars['uuid'];
@@ -1194,7 +1714,12 @@ export type InsertUserMutationVariables = Exact<{
 
 export type InsertUserMutation = { __typename?: 'mutation_root', user?: { __typename?: 'Users', id: any, name?: string | null, email: string, photo?: string | null } | null };
 
+export const BookmarkThinFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BookmarkThin"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Bookmarks"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"image"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]} as unknown as DocumentNode<BookmarkThinFragment, unknown>;
 export const UserFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Users"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"photo"}}]}}]} as unknown as DocumentNode<UserFieldsFragment, unknown>;
+export const InsertBookmarkDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"InsertBookmark"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"BookmarksInsertInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"bookmark"},"name":{"kind":"Name","value":"insertBookmarksOne"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<InsertBookmarkMutation, InsertBookmarkMutationVariables>;
+export const UpdateBookmarkDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateBookmark"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"BookmarksSetInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"bookmark"},"name":{"kind":"Name","value":"updateBookmarksByPk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"_set"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}},{"kind":"Argument","name":{"kind":"Name","value":"pk_columns"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UpdateBookmarkMutation, UpdateBookmarkMutationVariables>;
+export const GetBookmarksByCollectionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetBookmarksByCollection"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"collectionId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"bookmarks"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"collectionId"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"collectionId"}}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"createdAt"},"value":{"kind":"EnumValue","value":"DESC"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"BookmarkThin"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BookmarkThin"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Bookmarks"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"image"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]} as unknown as DocumentNode<GetBookmarksByCollectionQuery, GetBookmarksByCollectionQueryVariables>;
+export const GetBookmarksByUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetBookmarksByUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"bookmarks"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"createdById"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"createdAt"},"value":{"kind":"EnumValue","value":"DESC"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"BookmarkThin"}},{"kind":"Field","name":{"kind":"Name","value":"collection"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BookmarkThin"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Bookmarks"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"image"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]} as unknown as DocumentNode<GetBookmarksByUserQuery, GetBookmarksByUserQueryVariables>;
 export const CreateCollectionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateCollection"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"collection"},"name":{"kind":"Name","value":"insertCollectionsOne"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"roles"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"data"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"role"},"value":{"kind":"StringValue","value":"owner","block":false}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"onConflict"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"constraint"},"value":{"kind":"EnumValue","value":"collection_roles_pkey"}},{"kind":"ObjectField","name":{"kind":"Name","value":"update_columns"},"value":{"kind":"ListValue","values":[{"kind":"EnumValue","value":"role"}]}}]}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"onConflict"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"constraint"},"value":{"kind":"EnumValue","value":"collections_pkey"}},{"kind":"ObjectField","name":{"kind":"Name","value":"update_columns"},"value":{"kind":"ListValue","values":[{"kind":"EnumValue","value":"name"}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<CreateCollectionMutation, CreateCollectionMutationVariables>;
 export const GetUsersByEmailDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetUsersByEmail"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"users"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"IntValue","value":"1"}},{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"email"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_ilike"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Users"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"photo"}}]}}]} as unknown as DocumentNode<GetUsersByEmailQuery, GetUsersByEmailQueryVariables>;
 export const GetUserRolesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetUserRoles"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"user"},"name":{"kind":"Name","value":"usersByPk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"roles"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"role"}},{"kind":"Field","name":{"kind":"Name","value":"collection"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetUserRolesQuery, GetUserRolesQueryVariables>;
