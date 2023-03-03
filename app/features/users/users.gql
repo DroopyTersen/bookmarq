@@ -1,0 +1,53 @@
+fragment UserFields on Users {
+  id
+  name
+  email
+  photo
+}
+
+query GetUsersByEmail($email: String) {
+  users(limit: 1, where: { email: { _ilike: $email } }) {
+    ...UserFields
+  }
+}
+
+query GetUserRoles($userId: uuid!) {
+  user: usersByPk(id: $userId) {
+    roles {
+      role
+      workspace {
+        id
+        name
+      }
+    }
+  }
+}
+
+query GetUserById($id: uuid!) {
+  user: usersByPk(id: $id) {
+    ...UserFields
+    roles(orderBy: { workspace: { name: ASC } }) {
+      role
+      workspace {
+        id
+        name
+      }
+    }
+  }
+}
+
+query GetAllUsers {
+  users {
+    ...UserFields
+  }
+}
+mutation UpdateUser($id: uuid!, $updates: UsersSetInput) {
+  user: updateUsersByPk(pk_columns: { id: $id }, _set: $updates) {
+    ...UserFields
+  }
+}
+mutation InsertUser($email: String, $name: String, $photo: String) {
+  user: insertUsersOne(object: { email: $email, name: $name, photo: $photo }) {
+    ...UserFields
+  }
+}

@@ -1,0 +1,7 @@
+version: 3
+migrations_directory: hasura/migrations
+metadata_directory: hasura/metadata
+seeds_directory: hasura/seeds
+actions:
+  kind: synchronous
+  handler_webhook_baseurl: http://localhost:3000

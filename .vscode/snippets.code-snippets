@@ -1,0 +1,42 @@
+{
+  "Basic React component": {
+    "prefix": "comp",
+    "scope": "typescriptreact",
+    "body": [
+      "interface ${TM_FILENAME_BASE}Props {",
+      "    ${1:PROPS}",
+      "}",
+      "",
+      "export function ${TM_FILENAME_BASE}({ }: ${TM_FILENAME_BASE}Props) {",
+      "    return (",
+      "        <div>${TM_FILENAME_BASE}</div>",
+      "    );",
+      "}"
+    ],
+    "description": "Basic React component"
+  },
+  "Remix route module (unauthenticated)": {
+    "prefix": "route",
+    "body": [
+      "import { json, LoaderArgs } from \"@remix-run/node\";",
+      "import { useLoaderData } from \"@remix-run/react\";",
+      "import { requireAuthenticatedLoader } from \"~/features/auth/auth.remix.server\";",
+      "import { AppErrorBoundary } from \"~/toolkit/components/errors/AppErrorBoundary\";",
+      "",
+      "export const loader = async ({ request, params }: LoaderArgs) => {",
+      "  let { gqlClient } = await requireAuthenticatedLoader(request);",
+      "  return json({ message: \"${1:NAME}\" });",
+      "};",
+      "",
+      "export default function ${1:NAME}Route() {",
+      "  let data = useLoaderData<typeof loader>();",
+      "  return <div>{data.message}</div>;",
+      "}",
+      "",
+      "export const ErrorBoundary = AppErrorBoundary;",
+      "export const CatchBoundary = AppErrorBoundary;",
+      ""
+    ],
+    "description": "Remix route module (unauthenticated)"
+  }
+}

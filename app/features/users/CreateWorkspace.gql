@@ -1,0 +1,15 @@
+mutation CreateWorkspace($name: String!, $userId: uuid!) {
+  workspace: insertWorkspacesOne(
+    object: {
+      name: $name
+      roles: {
+        data: { userId: $userId, role: "owner" }
+        onConflict: { constraint: workspace_roles_pkey, update_columns: [role] }
+      }
+    }
+    onConflict: { constraint: workspaces_pkey, update_columns: [name] }
+  ) {
+    id
+    name
+  }
+}
