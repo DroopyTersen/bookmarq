@@ -14,7 +14,7 @@ import {
   requireAuthenticatedLoader,
 } from "~/features/auth/auth.remix.server";
 import { MainContentPadded } from "~/features/layout/AppLayout";
-import { createNewWorkspace } from "~/features/users/users.data.server";
+import { createNewCollection } from "~/features/users/users.data.server";
 import { AppErrorBoundary } from "~/toolkit/components/errors/AppErrorBoundary";
 import { ErrorContainer } from "~/toolkit/components/errors/ErrorContainer";
 import { InputField } from "~/toolkit/components/forms";
@@ -26,11 +26,7 @@ export const loader = async ({ request, params }: LoaderArgs) => {
   return json({});
 };
 
-function handleButtonClick() {
-  alert("Hey there natalie");
-}
-
-export default function NewWorkspace() {
+export default function NewCollection() {
   let data = useLoaderData<typeof loader>();
   let actionData = useActionData();
   let errors: any[] = actionData?.errors;
@@ -39,7 +35,7 @@ export default function NewWorkspace() {
   let navigate = useNavigate();
   return (
     <MainContentPadded>
-      <h1 className="text-secondary">New Workspace</h1>
+      <h1 className="text-secondary">New Collection</h1>
       <Form
         method="post"
         className="max-w-sm p-4 mt-4 rounded-lg shadow bg-base-200"
@@ -55,7 +51,7 @@ export default function NewWorkspace() {
         )}
         <fieldset className="space-y-4">
           <InputField
-            label="Workspace Name"
+            label="Collection Name"
             name="name"
             autoFocus
             required
@@ -73,7 +69,7 @@ export default function NewWorkspace() {
     </MainContentPadded>
   );
 }
-const NewWorkspaceSchema = zfd.formData({
+const NewCollectionSchema = zfd.formData({
   name: z.string().min(3).max(100),
 });
 
@@ -82,15 +78,15 @@ export const action = async ({ request, params }: ActionArgs) => {
     request
   );
   try {
-    let input = NewWorkspaceSchema.parse(formData);
-    let workspace = await createNewWorkspace(
+    let input = NewCollectionSchema.parse(formData);
+    let collection = await createNewCollection(
       createAdminGqlClient(),
       // gqlClient,
       userId,
       input.name
     );
 
-    return redirect("/" + workspace?.id);
+    return redirect("/" + collection?.id);
   } catch (err: unknown) {
     return tryParseActionError(err, formData);
   }

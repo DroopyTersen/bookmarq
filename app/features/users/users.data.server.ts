@@ -1,6 +1,6 @@
 import z from "zod";
 import {
-  CreateWorkspaceDocument,
+  CreateCollectionDocument,
   GetUserByIdDocument,
   GetUserRolesDocument,
   GetUsersByEmailDocument,
@@ -21,20 +21,20 @@ export const getUserById = async (gqlClient: GqlClient, id: string) => {
   return data?.user;
 };
 
-export const createNewWorkspace = async (
+export const createNewCollection = async (
   gqlClient: GqlClient,
   userId: string,
-  workspaceName: string
+  collectionName: string
 ) => {
-  let data = await gqlClient.request(CreateWorkspaceDocument, {
-    name: workspaceName,
+  let data = await gqlClient.request(CreateCollectionDocument, {
+    name: collectionName,
     userId,
   });
-  return data?.workspace;
+  return data?.collection;
 };
 
 /** Creates a User,Team, and Org if necessary */
-export const insertUserAndEnsureWorkspace = async (
+export const insertUserAndEnsureCollection = async (
   gqlClient: GqlClient,
   { name, email, photo }: UsersInsertInput
 ) => {
@@ -51,12 +51,12 @@ export const insertUserAndEnsureWorkspace = async (
     userId: user.id,
   });
 
-  let hasWorkspace = roleData?.user?.roles
+  let hascollection = roleData?.user?.roles
     ? roleData?.user?.roles?.length > 0
     : false;
 
-  if (!hasWorkspace) {
-    await gqlClient.request(CreateWorkspaceDocument, {
+  if (!hascollection) {
+    await gqlClient.request(CreateCollectionDocument, {
       name: `Personal`,
       userId: user.id,
     });

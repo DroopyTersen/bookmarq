@@ -1,0 +1,18 @@
+mutation CreateCollection($name: String!, $userId: uuid!) {
+  collection: insertCollectionsOne(
+    object: {
+      name: $name
+      roles: {
+        data: { userId: $userId, role: "owner" }
+        onConflict: {
+          constraint: collection_roles_pkey
+          update_columns: [role]
+        }
+      }
+    }
+    onConflict: { constraint: collections_pkey, update_columns: [name] }
+  ) {
+    id
+    name
+  }
+}

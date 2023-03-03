@@ -1,3 +1,3 @@
 - "!include public_users.yaml"
-- "!include public_workspace_roles.yaml"
-- "!include public_workspaces.yaml"
+- "!include public_collection_roles.yaml"
+- "!include public_collections.yaml"

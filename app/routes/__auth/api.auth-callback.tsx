@@ -5,7 +5,7 @@ import { authSession } from "~/features/auth/authSession.server";
 
 import {
   getUserByEmail,
-  insertUserAndEnsureWorkspace,
+  insertUserAndEnsureCollection,
 } from "~/features/users/users.data.server";
 import { AppUser } from "~/features/users/users.types";
 import { getAuthRedirectUri } from "~/toolkit/http/url.utils";
@@ -43,7 +43,7 @@ export const loader: LoaderFunction = async ({ request }) => {
     profile.email
   );
   if (!user) {
-    user = await insertUserAndEnsureWorkspace(adminClient, {
+    user = await insertUserAndEnsureCollection(adminClient, {
       name: profile.name,
       email: profile.email,
       photo: profile.picture,
