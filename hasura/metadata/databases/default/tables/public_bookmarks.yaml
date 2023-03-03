@@ -1,0 +1,79 @@
+table:
+  name: bookmarks
+  schema: public
+object_relationships:
+  - name: collection
+    using:
+      foreign_key_constraint_on: collection_id
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: created_by_id
+insert_permissions:
+  - role: user
+    permission:
+      check:
+        collection:
+          roles:
+            user_id:
+              _eq: X-Hasura-User-Id
+      set:
+        created_by_id: x-hasura-User-Id
+      columns:
+        - article_data
+        - collection_id
+        - description
+        - embed_data
+        - html
+        - image
+        - text
+        - title
+        - url
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - article_data
+        - embed_data
+        - collection_id
+        - description
+        - html
+        - id
+        - image
+        - text
+        - title
+        - url
+        - created_at
+        - updated_at
+        - created_by_id
+      filter:
+        collection:
+          roles:
+            user_id:
+              _eq: X-Hasura-User-Id
+update_permissions:
+  - role: user
+    permission:
+      columns:
+        - article_data
+        - embed_data
+        - collection_id
+        - description
+        - html
+        - id
+        - image
+        - text
+        - title
+        - url
+        - created_at
+        - updated_at
+        - created_by_id
+      filter:
+        created_by_id:
+          _eq: X-Hasura-User-Id
+      check: null
+delete_permissions:
+  - role: user
+    permission:
+      filter:
+        created_by_id:
+          _eq: X-Hasura-User-Id

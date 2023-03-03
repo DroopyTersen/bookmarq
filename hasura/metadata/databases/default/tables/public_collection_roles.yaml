@@ -2,12 +2,12 @@ table:
   name: collection_roles
   schema: public
 object_relationships:
-  - name: user
-    using:
-      foreign_key_constraint_on: user_id
   - name: collection
     using:
       foreign_key_constraint_on: collection_id
+  - name: user
+    using:
+      foreign_key_constraint_on: user_id
 insert_permissions:
   - role: user
     permission:
