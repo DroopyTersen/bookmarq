@@ -46,12 +46,16 @@ export const loader = async ({ request }: LoaderArgs) => {
 
 export default function App() {
   return (
-    <html lang="en" data-theme="droopy-theme">
+    <html
+      lang="en"
+      data-theme="droopy-theme"
+      className="flex flex-col min-h-full"
+    >
       <head>
         <Meta />
         <Links />
       </head>
-      <body className="h-full">
+      <body className="flex-grow grid grid-rows-[auto_1fr]">
         <AppLayout>
           <Outlet />
         </AppLayout>

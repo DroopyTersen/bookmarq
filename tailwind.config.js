@@ -17,12 +17,12 @@ module.exports = {
     themes: [
       {
         "droopy-theme": {
-          primary: "#ff6188",
-          "primary-focus": "#cd5170",
+          primary: "#e2574c",
+          "primary-focus": "#cb4e44",
           "primary-content": "#ffffff",
-          secondary: "#ffd866",
-          "secondary-focus": "#bda14c",
-          "secondary-content": "#2c2a2e",
+          secondary: "#f0c65f",
+          "secondary-focus": "#d7b354",
+          "secondary-content": "#253945",
           accent: "#78dce8",
           "accent-focus": "#218997",
           "accent-content": "#ffffff",

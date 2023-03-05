@@ -1,31 +1,37 @@
-import { Link } from "@remix-run/react";
+import { Link, useParams } from "@remix-run/react";
 import { LoginButton } from "~/routes/__auth/login";
-import { useEnvVar } from "~/toolkit/remix/useEnvVar";
 import { useCurrentUser } from "../auth/useCurrentUser";
 import { AccountDropodown } from "./AccountDropodown";
-import { CollectionPicker } from "./CollectionPicker";
 
 interface AppLayoutProps {
   children: React.ReactNode;
 }
 
 export function AppLayout({ children }: AppLayoutProps) {
+  let { collectionId } = useParams();
   const currentUser = useCurrentUser();
-  let environment = useEnvVar("PUBLIC_ENV");
   return (
     <>
       <header className="w-full px-2 navbar bg-base-200">
         <div className="flex gap-2 navbar-start">
-          <Link to="/">
-            <img
-              src="/images/icons/icon-96x96.png"
-              className="h-10"
-              alt="BookmarQ Logo"
-            />
+          <Link to="/" className="transition-transform hover:scale-105">
+            <div className="flex items-center gap-2">
+              <img
+                src="/images/icons/icon-96x96.png"
+                className="h-10"
+                alt="BookmarQ Logo"
+              />
+              <div>
+                <span className="text-xl font-medium text-gray-200">
+                  Bookmar
+                </span>
+                <span className="ml-[2px] text-xl font-bold">Q</span>
+              </div>
+            </div>
           </Link>
-          <div className="">
+          {/* <div className="">
             <CollectionPicker />
-          </div>
+          </div> */}
         </div>
         {/* <div className="relative navbar-center">
           {environment && environment !== "PROD" && (
@@ -37,7 +43,14 @@ export function AppLayout({ children }: AppLayoutProps) {
             bookmarQ
           </Link>
         </div> */}
-        <div className="navbar-end">
+        <div className="flex gap-3 navbar-end">
+          <Link
+            to={collectionId ? `/${collectionId}/new` : "/new-bookmark"}
+            className="btn btn-secondary"
+          >
+            <span className="inline sm:hidden">New</span>
+            <span className="hidden sm:block">New Bookmark</span>
+          </Link>
           <div>
             {currentUser ? (
               <AccountDropodown user={currentUser} />

@@ -13,7 +13,7 @@ export const FormField = ({
     <div className={`form-control ${className}`}>
       <label className="label" htmlFor={name}>
         {label && (
-          <span className="label-text">
+          <span className="font-medium tracking-wider label-text">
             {label}
             {required && <span className="ml-[2px] text-red-300">*</span>}
           </span>

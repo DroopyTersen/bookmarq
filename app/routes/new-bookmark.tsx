@@ -14,7 +14,8 @@ export const loader = async ({ request }: LoaderArgs) => {
   let collections = (await getUserCollections(gqlClient, auth.userId)) || [];
   // For now default to the first collection
   if (collections?.length > 0) {
-    return redirect(`/${collections?.[0]?.id}`);
+    let url = new URL(request.url);
+    return redirect(`/${collections?.[0]?.id}?${url.search}`);
   }
   return json({ bookmarks: [] });
 };
