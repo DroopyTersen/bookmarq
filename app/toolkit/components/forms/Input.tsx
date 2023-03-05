@@ -1,4 +1,5 @@
 import { forwardRef } from "react";
+import { twMerge } from "tailwind-merge";
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   // eslint-disable-next-line
@@ -12,9 +13,7 @@ export type InputProps = React.HTMLProps<HTMLInputElement> & {
 };
 
 export const getInputClasses = (className = "") =>
-  [
+  twMerge(
     "input w-full focus:input-accent input-bordered text-white bg-transparent disabled:text-white/70 disabled:bg-white/10",
-    className,
-  ]
-    .filter(Boolean)
-    .join(" ");
+    className
+  );

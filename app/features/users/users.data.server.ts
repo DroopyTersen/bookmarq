@@ -10,7 +10,13 @@ import {
 } from "~/.gql/graphql.types";
 
 import { GqlClient } from "~/toolkit/http/createGqlClient";
-
+export const getUserCollections = async (
+  gqlClient: GqlClient,
+  userId: string
+) => {
+  let data = await gqlClient.request(GetUserRolesDocument, { userId });
+  return data?.user?.roles?.map((r) => r.collection);
+};
 export const getUserByEmail = async (gqlClient: GqlClient, email: string) => {
   let data = await gqlClient.request(GetUsersByEmailDocument, { email });
   return data?.users?.[0];
