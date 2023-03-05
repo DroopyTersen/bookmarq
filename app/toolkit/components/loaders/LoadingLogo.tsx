@@ -3,7 +3,7 @@ interface LoadingLogoProps {
   /** defaults to 32px */
   height?: string;
   /** Pass a React component that has the SVG in it */
-  Logo: ({ className }) => any;
+  Logo: ({ className }: { className: string }) => any;
 }
 const CLASS_NAMES = {
   bounce: {

@@ -14,6 +14,6 @@ export type InputProps = React.HTMLProps<HTMLInputElement> & {
 
 export const getInputClasses = (className = "") =>
   twMerge(
-    "input w-full focus:input-accent input-bordered text-white bg-transparent disabled:text-white/70 disabled:bg-white/10",
+    "input w-full bg-base-200 focus:input-primary text-white disabled:text-white/70 disabled:bg-white/10",
     className
   );

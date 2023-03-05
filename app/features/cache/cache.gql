@@ -1,0 +1,18 @@
+query GetCacheItem($key: String!) {
+  item: cacheByPk(key: $key) {
+    key
+    value
+    expires
+  }
+}
+
+mutation SetCacheItem($input: CacheInsertInput!) {
+  item: insertCacheOne(
+    object: $input
+    onConflict: { constraint: cache_pkey, update_columns: [value, expires] }
+  ) {
+    key
+    expires
+    value
+  }
+}
