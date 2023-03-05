@@ -20,9 +20,9 @@ export const action: ActionFunction = async ({ request }) => {
 export default function () {
   return (
     <MainContentPadded>
-      <div className="p-8 text-center rounded-lg bg-gray-100/10">
-        <div className="mb-6 text-xl text-secondary">
-          Click below to login with Github
+      <div className="p-8 text-center rounded-lg">
+        <div className="mb-6 text-xl font-bold tracking-wide">
+          Click below to with a Github or Google
         </div>
         <LoginButton />
       </div>
@@ -48,7 +48,7 @@ export function LoginButton() {
     <div>
       <Form method="post" action="/login">
         <input type="hidden" name="returnTo" value={returnTo}></input>
-        <button className="btn btn-primary">Login</button>
+        <button className="btn btn-primary">Log in</button>
       </Form>
     </div>
   );

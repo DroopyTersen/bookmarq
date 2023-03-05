@@ -42,7 +42,7 @@ export const tryValidateToken = async (token: string) => {
   }
 };
 
-export function fillHasuraClaims({ id, name, username }: AppUser) {
+export function fillHasuraClaims({ id, name, email }: AppUser) {
   let role = "user";
 
   return {
@@ -51,8 +51,8 @@ export function fillHasuraClaims({ id, name, username }: AppUser) {
       "x-hasura-default-role": role,
       "x-hasura-user-id": id,
     },
-    username,
-    name: name || username,
+    email,
+    name: name || email,
     id,
   };
 }

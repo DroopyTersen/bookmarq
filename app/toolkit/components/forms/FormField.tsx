@@ -11,15 +11,17 @@ export const FormField = ({
   const errorMsg = parseErrorMessage(error);
   return (
     <div className={`form-control ${className}`}>
-      <label className="label" htmlFor={name}>
-        {label && (
-          <span className="font-medium tracking-wider label-text">
-            {label}
-            {required && <span className="ml-[2px] text-red-300">*</span>}
-          </span>
-        )}
-        {altLabel && <span className="label-text-alt">{altLabel}</span>}
-      </label>
+      {(label || altLabel) && (
+        <label className="label" htmlFor={name}>
+          {label && (
+            <span className="font-medium tracking-wider label-text">
+              {label}
+              {required && <span className="ml-[2px] text-red-300">*</span>}
+            </span>
+          )}
+          {altLabel && <span className="label-text-alt">{altLabel}</span>}
+        </label>
+      )}
       {children}
       {hint && (
         <label className="label">
@@ -54,8 +56,10 @@ export interface FormFieldProps {
   children?: React.ReactNode;
   /** Show the little red asterisk? */
   required?: boolean;
-  /** Additional CSS classes to add */
+  /** Additional CSS classes to add to the container */
   className?: string;
+  /** Additional CSS classes to add to the form control */
+  inputClassName?: string;
 }
 
 export const pluckFormFieldProps = (props: any) => {
@@ -68,6 +72,7 @@ export const pluckFormFieldProps = (props: any) => {
     hint,
     className,
     id,
+    inputClassName,
     ...formControlProps
   } = props;
 
@@ -83,6 +88,7 @@ export const pluckFormFieldProps = (props: any) => {
 
     formControlProps: {
       name,
+      className: inputClassName,
       id: id || name,
       ...formControlProps,
     },

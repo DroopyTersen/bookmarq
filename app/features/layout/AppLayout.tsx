@@ -1,4 +1,4 @@
-import { Link, useParams } from "@remix-run/react";
+import { Link, useLocation, useParams } from "@remix-run/react";
 import { LoginButton } from "~/routes/__auth/login";
 import { useCurrentUser } from "../auth/useCurrentUser";
 import { AccountDropodown } from "./AccountDropodown";
@@ -9,6 +9,8 @@ interface AppLayoutProps {
 
 export function AppLayout({ children }: AppLayoutProps) {
   let { collectionId } = useParams();
+  let { pathname } = useLocation();
+
   const currentUser = useCurrentUser();
   return (
     <>
@@ -25,7 +27,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                 <span className="text-xl font-medium text-gray-200">
                   Bookmar
                 </span>
-                <span className="ml-[2px] text-xl font-bold">Q</span>
+                <span className="ml-[2px] text-xl font-bold text-white">Q</span>
               </div>
             </div>
           </Link>
@@ -44,13 +46,15 @@ export function AppLayout({ children }: AppLayoutProps) {
           </Link>
         </div> */}
         <div className="flex gap-3 navbar-end">
-          <Link
-            to={collectionId ? `/${collectionId}/new` : "/new-bookmark"}
-            className="btn btn-secondary"
-          >
-            <span className="inline sm:hidden">New</span>
-            <span className="hidden sm:block">New Bookmark</span>
-          </Link>
+          {pathname !== `/${collectionId}/new` && currentUser && (
+            <Link
+              to={collectionId ? `/${collectionId}/new` : "/new-bookmark"}
+              className="btn btn-secondary"
+            >
+              <span className="inline sm:hidden">New</span>
+              <span className="hidden sm:block">New Bookmark</span>
+            </Link>
+          )}
           <div>
             {currentUser ? (
               <AccountDropodown user={currentUser} />
@@ -86,6 +90,19 @@ export const MainContentFullBleed = ({
 }: MainContentProps) => {
   return (
     <main className={`py-3 sm:py-6 prose-sm prose max-w-none ${className}`}>
+      {children}
+    </main>
+  );
+};
+
+export const MainContentCentered = ({
+  children,
+  className = "",
+}: MainContentProps) => {
+  return (
+    <main
+      className={`w-full md:max-w-3xl p-2 md:p-4 pb-8 mx-auto mt-4 md:mt-10 ${className}`}
+    >
       {children}
     </main>
   );

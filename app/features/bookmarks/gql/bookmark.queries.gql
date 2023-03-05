@@ -1,17 +1,33 @@
-fragment BookmarkThin on Bookmarks {
+fragment Bookmark on Bookmarks {
   id
   title
   image
   description
   createdAt
+  collectionId
+  url
 }
 
+fragment BookmarkDetails on Bookmarks {
+  ...Bookmark
+  createdBy {
+    id
+    name
+    email
+  }
+  articleData
+  embedData
+  text
+  html
+  createdAt
+  updatedAt
+}
 query GetBookmarksByCollection($collectionId: String!) {
   bookmarks(
     where: { collectionId: { _eq: $collectionId } }
     orderBy: { createdAt: DESC }
   ) {
-    ...BookmarkThin
+    ...Bookmark
   }
 }
 
@@ -20,10 +36,16 @@ query GetBookmarksByUser($userId: uuid!) {
     where: { createdById: { _eq: $userId } }
     orderBy: { createdAt: DESC }
   ) {
-    ...BookmarkThin
+    ...Bookmark
     collection {
       name
       id
     }
+  }
+}
+
+query GetBookmarkById($id: String!) {
+  bookmark: bookmarksByPk(id: $id) {
+    ...BookmarkDetails
   }
 }

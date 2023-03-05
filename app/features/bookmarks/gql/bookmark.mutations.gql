@@ -9,3 +9,9 @@ mutation UpdateBookmark($id: String!, $input: BookmarksSetInput!) {
     id
   }
 }
+
+mutation DeleteBookmark($id: String!) {
+  bookmark: deleteBookmarksByPk(id: $id) {
+    id
+  }
+}
