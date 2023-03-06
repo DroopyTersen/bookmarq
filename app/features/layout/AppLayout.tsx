@@ -23,7 +23,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                 className="h-10"
                 alt="BookmarQ Logo"
               />
-              <div>
+              <div className="hidden sm:block">
                 <span className="text-xl font-medium text-gray-200">
                   Bookmar
                 </span>
