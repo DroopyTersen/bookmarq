@@ -5,7 +5,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        gray: colors.slate,
+        gray: colors.gray,
       }
     },
   },
@@ -23,8 +23,8 @@ module.exports = {
           secondary: "#f0c65f",
           "secondary-focus": "#d7b354",
           "secondary-content": "#253945",
-          accent: "#78dce8",
-          "accent-focus": "#218997",
+          accent: "#218997",
+          "accent-focus": "#197c8a",
           "accent-content": "#ffffff",
           neutral: "#2c2a2e",
           "neutral-focus": "#383739",
