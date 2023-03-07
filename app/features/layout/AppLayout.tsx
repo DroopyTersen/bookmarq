@@ -14,7 +14,7 @@ export function AppLayout({ children }: AppLayoutProps) {
   const currentUser = useCurrentUser();
   return (
     <>
-      <header className="w-full px-2 navbar bg-base-200">
+      <header className="w-full px-2 navbar bg-base-100">
         <div className="flex gap-2 navbar-start">
           <Link to="/" className="transition-transform hover:scale-105">
             <div className="flex items-center gap-2">
@@ -25,9 +25,9 @@ export function AppLayout({ children }: AppLayoutProps) {
               />
               <div className="hidden sm:block">
                 <span className="text-xl font-medium text-gray-200">
-                  Bookmar
+                  BookmarQ
                 </span>
-                <span className="ml-[2px] text-xl font-bold text-white">Q</span>
+                {/* <span className="ml-[2px] text-xl font-bold text-white">Q</span> */}
               </div>
             </div>
           </Link>
@@ -49,7 +49,7 @@ export function AppLayout({ children }: AppLayoutProps) {
           {pathname !== `/${collectionId}/new` && currentUser && (
             <Link
               to={collectionId ? `/${collectionId}/new` : "/new-bookmark"}
-              className="btn btn-secondary"
+              className="rounded-2xl btn btn-secondary"
             >
               <span className="inline sm:hidden">New</span>
               <span className="hidden sm:block">New Bookmark</span>

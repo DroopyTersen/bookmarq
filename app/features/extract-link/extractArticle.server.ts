@@ -3,14 +3,21 @@ import { ExtractedArticleData } from "./extract-link.types";
 import { extractImageDimensions } from "./extractImageDimensions.server";
 
 export const extractArticle = async (
+  html: string,
   url: string,
   { provideText = true }: { provideText: boolean }
 ): Promise<ExtractedArticleData | null> => {
-  const { extract } = await import("@extractus/article-extractor");
+  console.log("🚀 | url1:", url);
+  const { extractFromHtml } = await import("@extractus/article-extractor");
   try {
-    const extractedArticle = await extract(url);
+    // console.log("🚀 | full Html:", html);
+    const extractedArticle = await extractFromHtml(html, url);
+    // console.log("🚀 | extractedArticle:", extractedArticle);
     if (!extractedArticle) return null;
     let { content, ...metadata } = extractedArticle;
+    if (metadata?.author === "@") {
+      metadata.author = "";
+    }
     let text = "";
     if (provideText) {
       text = await convertHtmlToText(content || "");
@@ -33,8 +40,8 @@ export const extractArticle = async (
       }
     }
     return result;
-  } catch (e) {
-    console.error(e);
+  } catch (e: any) {
+    console.error("Something went wrong with this", e?.message);
     return null;
   }
 };
