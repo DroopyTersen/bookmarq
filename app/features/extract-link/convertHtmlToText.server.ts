@@ -5,6 +5,7 @@ export const convertHtmlToText = (html: string): string => {
 
   let text = htmlToText(html, {
     wordwrap: false, // defaults to 80 chars
+
     selectors: [
       {
         selector: "a",
@@ -13,6 +14,31 @@ export const convertHtmlToText = (html: string): string => {
       },
       { selector: "img", format: "skip" },
       { selector: "td", format: "inline" },
+      {
+        selector: "pre",
+        options: {
+          trailingLineBreaks: 0,
+          trimEmptyLines: true,
+          leadingLineBreaks: 0,
+        },
+      },
+      {
+        selector: "pre>code",
+        options: {
+          trailingLineBreaks: 0,
+          trimEmptyLines: true,
+          leadingLineBreaks: 0,
+        },
+      },
+      {
+        selector: "pre>code",
+        format: "pre",
+        options: {
+          trailingLineBreaks: 0,
+          trimEmptyLines: true,
+          leadingLineBreaks: 0,
+        },
+      },
       { selector: `[style*="display:none"]`, format: "skip" },
       { selector: `[style*="visiblity:hidden"]`, format: "skip" },
     ],

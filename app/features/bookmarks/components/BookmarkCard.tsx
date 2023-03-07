@@ -9,13 +9,13 @@ export function BookmarkCard({ bookmark }: BookmarkCardProps) {
   let bookmarkUrl = new URL(bookmark.url);
 
   return (
-    <div className="grid grid-cols-1 shadow-xl sm:grid-cols-2 card bg-base-200 card-compact">
+    <div className="grid grid-cols-1 overflow-hidden shadow-xl sm:grid-cols-2 card bg-base-200 card-compact">
       <Link
         to={bookmark.id}
-        className="brightness-95 hover:brightness-105 transition-[filter] rounded-l-lg"
+        className="brightness-95 hover:brightness-105 transition-[filter]"
         title="Navigate to bookmark"
       >
-        <figure className="h-full rounded-l-lg bg-base-300">
+        <figure className="h-full bg-base-300">
           <img src={bookmark?.image || "/images/fallback.png"} alt="Album" />
         </figure>
       </Link>

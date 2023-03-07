@@ -2,12 +2,12 @@
 
 html .prose {
   a:not(.btn) {
-    color: lighten($primary, 25%);
+    color: lighten($primary, 10%);
     transition: color 0.15s ease-out;
     text-decoration: none;
 
     &:hover {
-      color: lighten($primary, 10%);
+      color: lighten($primary, 5%);
       text-decoration: underline;
 
     }
@@ -27,4 +27,31 @@ input[type="search"]::-webkit-search-cancel-button {
   margin-left: .4em;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' stroke='currentColor' fill='currentColor'><path d='M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'/></svg>");
   cursor: pointer;
+}
+
+html {
+  a.link-primary {
+    color: lighten($primary, 10%);
+
+    &:hover {
+      color: lighten($primary, 5%);
+      text-decoration: underline;
+
+    }
+  }
+
+  pre,
+  .prose pre {
+    white-space: pre-wrap;
+    /* css-3 */
+    white-space: -moz-pre-wrap;
+    /* Mozilla, since 1999 */
+    white-space: -pre-wrap;
+    /* Opera 4-6 */
+    white-space: -o-pre-wrap;
+    /* Opera 7 */
+    word-wrap: break-word;
+    /* Internet Explorer 5.5+ */
+  }
+
 }

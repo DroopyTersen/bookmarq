@@ -30,6 +30,7 @@ export const meta: MetaFunction = () => ({
 });
 
 export const loader = async ({ request }: LoaderArgs) => {
+  console.log("CHROME_BIN", process.env.CHROME_BIN);
   let userSession = await authSession.get(request);
   let user;
   if (userSession?.userId && userSession?.hasuraToken) {

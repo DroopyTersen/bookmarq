@@ -10,6 +10,7 @@ import {
   getBookmarkById,
 } from "~/features/bookmarks/bookmarks.data.server";
 import { BookmarkDetails } from "~/features/bookmarks/bookmarks.schema";
+import { ArticleDisplay } from "~/features/bookmarks/components/articles/ArticleDisplay";
 import { EmbedDisplay } from "~/features/bookmarks/components/embeds/EmbedDisplay";
 import { ConfirmationButton } from "~/toolkit/components/modal/ConfirmationButton";
 import { useSearchParam } from "~/toolkit/remix/useSearchParam";
@@ -26,7 +27,7 @@ export default function () {
   let backUrl = returnTo || "..";
   return (
     <main className="relative w-full p-2 mx-auto mt-4 shadow bookmark-toolbar md:max-w-3xl bg-base-200 rounded-xl sm:p-4">
-      <header className="sticky top-0 z-10 flex justify-between w-full bookmark-toolbar bg-base-200">
+      <header className="sticky top-0 z-10 flex justify-between w-full bookmark-toolbar bg-base-200 ">
         <div className="toolbar-start">
           <Link to={backUrl} className="btn btn-ghost btn-circle" title="back">
             <BsArrowLeftShort size={34} />
@@ -92,40 +93,6 @@ export default function () {
         <ArticleDisplay bookmark={bookmark as BookmarkDetails} />
       </div>
     </main>
-  );
-}
-
-function ArticleDisplay({ bookmark }: { bookmark: BookmarkDetails }) {
-  if (!bookmark?.articleData) return null;
-
-  return (
-    <>
-      {bookmark?.image && (
-        <div className="flex justify-center mb-4">
-          <a href={bookmark?.url} target="_blank" className="link link-hover">
-            <img
-              src={bookmark?.image}
-              width={bookmark?.articleData?.imageDimensions?.width}
-              height={bookmark?.articleData?.imageDimensions?.height}
-              className={`rounded-lg max-w-full`}
-            />
-          </a>
-        </div>
-      )}
-      <div className="flex gap-2">
-        {bookmark?.articleData?.author && (
-          <span className="font-semibold">{bookmark?.articleData?.author}</span>
-        )}
-        {bookmark?.articleData?.published && (
-          <div className="text-gray-300">
-            {new Date(bookmark?.articleData?.published)?.toLocaleString()}
-          </div>
-        )}
-      </div>
-      <pre className="mt-4 font-sans text-sm whitespace-pre-wrap rounded-lg bg-base-200">
-        {bookmark?.text}
-      </pre>
-    </>
   );
 }
 

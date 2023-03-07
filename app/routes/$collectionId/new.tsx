@@ -81,7 +81,7 @@ export const action = async ({ request, params }: ActionArgs) => {
     let bookmarkInput = await processUrl(
       formInput.url,
       { ...formInput, collectionId },
-      cache
+      undefined
     );
     let bookmark = await createBookmark(gqlClient, bookmarkInput);
     if (!bookmark) {
