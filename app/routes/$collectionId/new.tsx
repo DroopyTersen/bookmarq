@@ -34,7 +34,7 @@ export default function Index() {
           <Overlay className="rounded-lg" opacity={isSaving ? 0.7 : 0}>
             <div className="flex flex-col items-center">
               <LoadingLogo Logo={Logo} />
-              <div className="mt-2">Saving bookmark...</div>
+              <div className="mt-2 font-bold">Extracting content...</div>
             </div>
           </Overlay>
           <Link

@@ -15,7 +15,7 @@ export const loader = async ({ request }: LoaderArgs) => {
   // For now default to the first collection
   if (collections?.length > 0) {
     let url = new URL(request.url);
-    return redirect(`/${collections?.[0]?.id}?${url.search}`);
+    return redirect(`/${collections?.[0]?.id}/new?${url.search}`);
   }
   return json({ bookmarks: [] });
 };
