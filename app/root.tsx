@@ -9,7 +9,7 @@ import {
   ScrollRestoration,
   ShouldRevalidateFunction,
 } from "@remix-run/react";
-
+import hightlightJSStyles from "highlight.js/styles/stackoverflow-dark.css";
 import globalStyles from "../public/css/global.css";
 import { createUserGqlClient } from "./common/hasura.server";
 import { authSession } from "./features/auth/authSession.server";
@@ -17,10 +17,10 @@ import { AppLayout } from "./features/layout/AppLayout";
 import { getUserById } from "./features/users/users.data.server";
 import tailwindStyles from "./styles/tailwind.css";
 import { getPublicEnvVars } from "./toolkit/remix/envVars.server";
-
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: tailwindStyles },
   { rel: "stylesheet", href: globalStyles },
+  { rel: "stylesheet", href: hightlightJSStyles },
 ];
 
 export const meta: MetaFunction = () => ({
@@ -30,6 +30,7 @@ export const meta: MetaFunction = () => ({
 });
 
 export const loader = async ({ request }: LoaderArgs) => {
+  let url = new URL(request.url);
   console.log("CHROME_BIN", process.env.CHROME_BIN);
   let userSession = await authSession.get(request);
   let user;

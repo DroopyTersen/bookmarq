@@ -1,9 +1,20 @@
-import { useState } from "react";
+import hljs from "highlight.js";
+import { useEffect, useRef, useState } from "react";
 import { BookmarkDetails } from "../../bookmarks.schema";
 
 export function ArticleDisplay({ bookmark }: { bookmark: BookmarkDetails }) {
   if (!bookmark?.articleData) return null;
+  let articleRef = useRef<HTMLDivElement | null>(null);
   let [tab, setTab] = useState<"text" | "html">("html");
+  useEffect(() => {
+    if (!articleRef.current || !bookmark?.articleData?.html) return;
+    articleRef.current.innerHTML = bookmark?.articleData?.html || "";
+    hljs.highlightAll();
+    document.querySelectorAll("pre").forEach((pre: HTMLPreElement) => {
+      // pre.contentEditable = "true";
+      // pre.spellcheck = false;
+    });
+  }, [bookmark?.articleData?.html]);
   console.log({ article: bookmark?.articleData });
   return (
     <>
@@ -29,12 +40,7 @@ export function ArticleDisplay({ bookmark }: { bookmark: BookmarkDetails }) {
           </div>
         )}
       </div>
-      {tab === "html" && (
-        <div
-          className="max-w-full prose-sm prose"
-          dangerouslySetInnerHTML={{ __html: bookmark?.articleData?.html + "" }}
-        ></div>
-      )}
+      {tab === "html" && <div className="max-w-full prose" ref={articleRef}></div>}
       {tab === "text" && (
         <pre className="mt-4 font-sans text-sm whitespace-pre-wrap rounded-lg bg-base-200">
           {bookmark?.text}
