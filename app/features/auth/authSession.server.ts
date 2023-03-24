@@ -47,8 +47,9 @@ export const authSession = {
     });
   },
   /** Gets the raw Session from the request Cookie */
-  _getSession: (request: Request) =>
-    storage.getSession(request.headers.get("Cookie")),
+  _getSession: (request: Request) => {
+    return storage.getSession(request.headers.get("Cookie"));
+  },
   /** Gets the SessionData from the request Cookie. Returns null if no session. */
   get: async (request: Request) => {
     const session = await authSession._getSession(request);
