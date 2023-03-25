@@ -42,7 +42,7 @@ query GetAllUsers {
   }
 }
 mutation UpdateUser($id: uuid!, $updates: UsersSetInput) {
-  user: updateUsersByPk(pk_columns: { id: $id }, _set: $updates) {
+  user: updateUsersByPk(pkColumns: { id: $id }, _set: $updates) {
     ...UserFields
   }
 }

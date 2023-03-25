@@ -4,13 +4,10 @@ mutation CreateCollection($name: String!, $userId: uuid!) {
       name: $name
       roles: {
         data: { userId: $userId, role: "owner" }
-        onConflict: {
-          constraint: collection_roles_pkey
-          update_columns: [role]
-        }
+        onConflict: { constraint: collection_roles_pkey, updateColumns: [role] }
       }
     }
-    onConflict: { constraint: collections_pkey, update_columns: [name] }
+    onConflict: { constraint: collections_pkey, updateColumns: [name] }
   ) {
     id
     name

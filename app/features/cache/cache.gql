@@ -9,7 +9,7 @@ query GetCacheItem($key: String!) {
 mutation SetCacheItem($input: CacheInsertInput!) {
   item: insertCacheOne(
     object: $input
-    onConflict: { constraint: cache_pkey, update_columns: [value, expires] }
+    onConflict: { constraint: cache_pkey, updateColumns: [value, expires] }
   ) {
     key
     expires

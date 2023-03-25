@@ -1,4 +1,6 @@
 import { Link } from "@remix-run/react";
+import { FiExternalLink } from "react-icons/fi";
+import { Img } from "~/toolkit/components/image/Img";
 import { Bookmark } from "../bookmarks.schema";
 
 interface BookmarkCardProps {
@@ -14,9 +16,10 @@ export function BookmarkCard({ bookmark }: BookmarkCardProps) {
         to={bookmark.id}
         className="brightness-95 hover:brightness-105 transition-[filter]"
         title="Navigate to bookmark"
+        prefetch="intent"
       >
         <figure className="h-full bg-base-300">
-          <img src={bookmark?.image || "/images/fallback.png"} alt="Album" />
+          <Img src={bookmark?.image || ""} fallback="/images/fallback.png" />
         </figure>
       </Link>
       <div className="grid card-body grid-rows-[1fr_auto]">
@@ -25,6 +28,7 @@ export function BookmarkCard({ bookmark }: BookmarkCardProps) {
             to={bookmark.id}
             className="link link-hover focus:underline"
             title="Navigate to bookmark"
+            prefetch="intent"
           >
             <h3 className="card-title">{bookmark?.title || "Missing Title"}</h3>
           </Link>
@@ -39,18 +43,14 @@ export function BookmarkCard({ bookmark }: BookmarkCardProps) {
           </div>
 
           {bookmark?.description && (
-            <Link to={bookmark.id} className="link-hover">
+            <Link to={bookmark.id} className="link-hover" prefetch="intent">
               <p className="my-2">{bookmark.description}</p>
             </Link>
           )}
         </div>
         <div className="justify-end card-actions">
-          <a
-            className="btn btn-primary btn-sm"
-            target="_blank"
-            href={bookmark?.url}
-          >
-            Open Url
+          <a className="gap-2 btn btn-primary btn-sm" target="_blank" href={bookmark?.url}>
+            <FiExternalLink className="opacity-80 relative -top-[1px]" /> Open Url
           </a>
         </div>
       </div>

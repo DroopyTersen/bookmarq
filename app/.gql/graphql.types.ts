@@ -179,7 +179,7 @@ export type BookmarksMinFields = {
 export type BookmarksMutationResponse = {
   __typename?: 'BookmarksMutationResponse';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affectedRows: Scalars['Int'];
   /** data from the rows affected by the mutation */
   returning: Array<Bookmarks>;
 };
@@ -187,7 +187,7 @@ export type BookmarksMutationResponse = {
 /** on_conflict condition type for table "bookmarks" */
 export type BookmarksOnConflict = {
   constraint: BookmarksConstraint;
-  update_columns?: Array<BookmarksUpdateColumn>;
+  updateColumns?: Array<BookmarksUpdateColumn>;
   where?: InputMaybe<BookmarksBoolExp>;
 };
 
@@ -268,6 +268,31 @@ export type BookmarksSetInput = {
   url?: InputMaybe<Scalars['String']>;
 };
 
+/** Streaming cursor of the table "bookmarks" */
+export type BookmarksStreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: BookmarksStreamCursorValueInput;
+  /** cursor ordering */
+  ordering?: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type BookmarksStreamCursorValueInput = {
+  articleData?: InputMaybe<Scalars['jsonb']>;
+  collectionId?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  createdById?: InputMaybe<Scalars['uuid']>;
+  description?: InputMaybe<Scalars['String']>;
+  embedData?: InputMaybe<Scalars['jsonb']>;
+  html?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']>;
+  image?: InputMaybe<Scalars['String']>;
+  text?: InputMaybe<Scalars['String']>;
+  title?: InputMaybe<Scalars['String']>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']>;
+  url?: InputMaybe<Scalars['String']>;
+};
+
 /** update columns of table "bookmarks" */
 export enum BookmarksUpdateColumn {
   /** column name */
@@ -311,6 +336,7 @@ export type BookmarksUpdates = {
   _prepend?: InputMaybe<BookmarksPrependInput>;
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<BookmarksSetInput>;
+  /** filter the rows which have to be updated */
   where: BookmarksBoolExp;
 };
 
@@ -421,7 +447,7 @@ export type CacheMinFields = {
 export type CacheMutationResponse = {
   __typename?: 'CacheMutationResponse';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affectedRows: Scalars['Int'];
   /** data from the rows affected by the mutation */
   returning: Array<Cache>;
 };
@@ -429,7 +455,7 @@ export type CacheMutationResponse = {
 /** on_conflict condition type for table "cache" */
 export type CacheOnConflict = {
   constraint: CacheConstraint;
-  update_columns?: Array<CacheUpdateColumn>;
+  updateColumns?: Array<CacheUpdateColumn>;
   where?: InputMaybe<CacheBoolExp>;
 };
 
@@ -475,6 +501,23 @@ export type CacheSetInput = {
   value?: InputMaybe<Scalars['jsonb']>;
 };
 
+/** Streaming cursor of the table "cache" */
+export type CacheStreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: CacheStreamCursorValueInput;
+  /** cursor ordering */
+  ordering?: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type CacheStreamCursorValueInput = {
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  expires?: InputMaybe<Scalars['timestamptz']>;
+  key?: InputMaybe<Scalars['String']>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']>;
+  value?: InputMaybe<Scalars['jsonb']>;
+};
+
 /** update columns of table "cache" */
 export enum CacheUpdateColumn {
   /** column name */
@@ -502,6 +545,7 @@ export type CacheUpdates = {
   _prepend?: InputMaybe<CachePrependInput>;
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<CacheSetInput>;
+  /** filter the rows which have to be updated */
   where: CacheBoolExp;
 };
 
@@ -526,6 +570,10 @@ export type CollectionRolesAggregate = {
   nodes: Array<CollectionRoles>;
 };
 
+export type CollectionRolesAggregateBoolExp = {
+  count?: InputMaybe<CollectionRolesAggregateBoolExpCount>;
+};
+
 /** aggregate fields of "collection_roles" */
 export type CollectionRolesAggregateFields = {
   __typename?: 'CollectionRolesAggregateFields';
@@ -544,8 +592,8 @@ export type CollectionRolesAggregateFieldsCountArgs = {
 /** order by aggregate values of table "collection_roles" */
 export type CollectionRolesAggregateOrderBy = {
   count?: InputMaybe<OrderBy>;
-  max?: InputMaybe<Collection_Roles_Max_Order_By>;
-  min?: InputMaybe<Collection_Roles_Min_Order_By>;
+  max?: InputMaybe<CollectionRolesMaxOrderBy>;
+  min?: InputMaybe<CollectionRolesMinOrderBy>;
 };
 
 /** input type for inserting array relation for remote table "collection_roles" */
@@ -596,6 +644,15 @@ export type CollectionRolesMaxFields = {
   userId?: Maybe<Scalars['uuid']>;
 };
 
+/** order by max() on columns of table "collection_roles" */
+export type CollectionRolesMaxOrderBy = {
+  collectionId?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  role?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
+};
+
 /** aggregate min on columns */
 export type CollectionRolesMinFields = {
   __typename?: 'CollectionRolesMinFields';
@@ -606,11 +663,20 @@ export type CollectionRolesMinFields = {
   userId?: Maybe<Scalars['uuid']>;
 };
 
+/** order by min() on columns of table "collection_roles" */
+export type CollectionRolesMinOrderBy = {
+  collectionId?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  role?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
+};
+
 /** response of any mutation on the table "collection_roles" */
 export type CollectionRolesMutationResponse = {
   __typename?: 'CollectionRolesMutationResponse';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affectedRows: Scalars['Int'];
   /** data from the rows affected by the mutation */
   returning: Array<CollectionRoles>;
 };
@@ -618,7 +684,7 @@ export type CollectionRolesMutationResponse = {
 /** on_conflict condition type for table "collection_roles" */
 export type CollectionRolesOnConflict = {
   constraint: CollectionRolesConstraint;
-  update_columns?: Array<CollectionRolesUpdateColumn>;
+  updateColumns?: Array<CollectionRolesUpdateColumn>;
   where?: InputMaybe<CollectionRolesBoolExp>;
 };
 
@@ -662,6 +728,23 @@ export type CollectionRolesSetInput = {
   userId?: InputMaybe<Scalars['uuid']>;
 };
 
+/** Streaming cursor of the table "collection_roles" */
+export type CollectionRolesStreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: CollectionRolesStreamCursorValueInput;
+  /** cursor ordering */
+  ordering?: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type CollectionRolesStreamCursorValueInput = {
+  collectionId?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  role?: InputMaybe<Scalars['String']>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']>;
+  userId?: InputMaybe<Scalars['uuid']>;
+};
+
 /** update columns of table "collection_roles" */
 export enum CollectionRolesUpdateColumn {
   /** column name */
@@ -679,6 +762,7 @@ export enum CollectionRolesUpdateColumn {
 export type CollectionRolesUpdates = {
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<CollectionRolesSetInput>;
+  /** filter the rows which have to be updated */
   where: CollectionRolesBoolExp;
 };
 
@@ -746,7 +830,7 @@ export type CollectionsBoolExp = {
   id?: InputMaybe<StringComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
   roles?: InputMaybe<CollectionRolesBoolExp>;
-  roles_aggregate?: InputMaybe<Collection_Roles_Aggregate_Bool_Exp>;
+  rolesAggregate?: InputMaybe<CollectionRolesAggregateBoolExp>;
   updatedAt?: InputMaybe<TimestamptzComparisonExp>;
 };
 
@@ -787,7 +871,7 @@ export type CollectionsMinFields = {
 export type CollectionsMutationResponse = {
   __typename?: 'CollectionsMutationResponse';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affectedRows: Scalars['Int'];
   /** data from the rows affected by the mutation */
   returning: Array<Collections>;
 };
@@ -802,7 +886,7 @@ export type CollectionsObjRelInsertInput = {
 /** on_conflict condition type for table "collections" */
 export type CollectionsOnConflict = {
   constraint: CollectionsConstraint;
-  update_columns?: Array<CollectionsUpdateColumn>;
+  updateColumns?: Array<CollectionsUpdateColumn>;
   where?: InputMaybe<CollectionsBoolExp>;
 };
 
@@ -840,6 +924,22 @@ export type CollectionsSetInput = {
   updatedAt?: InputMaybe<Scalars['timestamptz']>;
 };
 
+/** Streaming cursor of the table "collections" */
+export type CollectionsStreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: CollectionsStreamCursorValueInput;
+  /** cursor ordering */
+  ordering?: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type CollectionsStreamCursorValueInput = {
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  id?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']>;
+};
+
 /** update columns of table "collections" */
 export enum CollectionsUpdateColumn {
   /** column name */
@@ -855,6 +955,7 @@ export enum CollectionsUpdateColumn {
 export type CollectionsUpdates = {
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<CollectionsSetInput>;
+  /** filter the rows which have to be updated */
   where: CollectionsBoolExp;
 };
 
@@ -1037,7 +1138,7 @@ export type UsersBoolExp = {
   name?: InputMaybe<StringComparisonExp>;
   photo?: InputMaybe<StringComparisonExp>;
   roles?: InputMaybe<CollectionRolesBoolExp>;
-  roles_aggregate?: InputMaybe<Collection_Roles_Aggregate_Bool_Exp>;
+  rolesAggregate?: InputMaybe<CollectionRolesAggregateBoolExp>;
   updatedAt?: InputMaybe<TimestamptzComparisonExp>;
 };
 
@@ -1086,7 +1187,7 @@ export type UsersMinFields = {
 export type UsersMutationResponse = {
   __typename?: 'UsersMutationResponse';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affectedRows: Scalars['Int'];
   /** data from the rows affected by the mutation */
   returning: Array<Users>;
 };
@@ -1101,7 +1202,7 @@ export type UsersObjRelInsertInput = {
 /** on_conflict condition type for table "users" */
 export type UsersOnConflict = {
   constraint: UsersConstraint;
-  update_columns?: Array<UsersUpdateColumn>;
+  updateColumns?: Array<UsersUpdateColumn>;
   where?: InputMaybe<UsersBoolExp>;
 };
 
@@ -1147,6 +1248,24 @@ export type UsersSetInput = {
   updatedAt?: InputMaybe<Scalars['timestamptz']>;
 };
 
+/** Streaming cursor of the table "users" */
+export type UsersStreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: UsersStreamCursorValueInput;
+  /** cursor ordering */
+  ordering?: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type UsersStreamCursorValueInput = {
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  email?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  name?: InputMaybe<Scalars['String']>;
+  photo?: InputMaybe<Scalars['String']>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']>;
+};
+
 /** update columns of table "users" */
 export enum UsersUpdateColumn {
   /** column name */
@@ -1166,6 +1285,7 @@ export enum UsersUpdateColumn {
 export type UsersUpdates = {
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<UsersSetInput>;
+  /** filter the rows which have to be updated */
   where: UsersBoolExp;
 };
 
@@ -1182,108 +1302,11 @@ export type UuidComparisonExp = {
   _nin?: InputMaybe<Array<Scalars['uuid']>>;
 };
 
-/** Streaming cursor of the table "bookmarks" */
-export type Bookmarks_StreamCursorInput = {
-  /** Stream column input with initial value */
-  initialValue: Bookmarks_StreamCursorValueInput;
-  /** cursor ordering */
-  ordering?: InputMaybe<CursorOrdering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type Bookmarks_StreamCursorValueInput = {
-  articleData?: InputMaybe<Scalars['jsonb']>;
-  collectionId?: InputMaybe<Scalars['String']>;
-  createdAt?: InputMaybe<Scalars['timestamptz']>;
-  createdById?: InputMaybe<Scalars['uuid']>;
-  description?: InputMaybe<Scalars['String']>;
-  embedData?: InputMaybe<Scalars['jsonb']>;
-  html?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['String']>;
-  image?: InputMaybe<Scalars['String']>;
-  text?: InputMaybe<Scalars['String']>;
-  title?: InputMaybe<Scalars['String']>;
-  updatedAt?: InputMaybe<Scalars['timestamptz']>;
-  url?: InputMaybe<Scalars['String']>;
-};
-
-/** Streaming cursor of the table "cache" */
-export type Cache_StreamCursorInput = {
-  /** Stream column input with initial value */
-  initialValue: Cache_StreamCursorValueInput;
-  /** cursor ordering */
-  ordering?: InputMaybe<CursorOrdering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type Cache_StreamCursorValueInput = {
-  createdAt?: InputMaybe<Scalars['timestamptz']>;
-  expires?: InputMaybe<Scalars['timestamptz']>;
-  key?: InputMaybe<Scalars['String']>;
-  updatedAt?: InputMaybe<Scalars['timestamptz']>;
-  value?: InputMaybe<Scalars['jsonb']>;
-};
-
-export type Collection_Roles_Aggregate_Bool_Exp = {
-  count?: InputMaybe<Collection_Roles_Aggregate_Bool_Exp_Count>;
-};
-
-export type Collection_Roles_Aggregate_Bool_Exp_Count = {
+export type CollectionRolesAggregateBoolExpCount = {
   arguments?: InputMaybe<Array<CollectionRolesSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']>;
   filter?: InputMaybe<CollectionRolesBoolExp>;
   predicate: IntComparisonExp;
-};
-
-/** order by max() on columns of table "collection_roles" */
-export type Collection_Roles_Max_Order_By = {
-  collectionId?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  role?: InputMaybe<OrderBy>;
-  updatedAt?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-/** order by min() on columns of table "collection_roles" */
-export type Collection_Roles_Min_Order_By = {
-  collectionId?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  role?: InputMaybe<OrderBy>;
-  updatedAt?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-/** Streaming cursor of the table "collection_roles" */
-export type Collection_Roles_StreamCursorInput = {
-  /** Stream column input with initial value */
-  initialValue: Collection_Roles_StreamCursorValueInput;
-  /** cursor ordering */
-  ordering?: InputMaybe<CursorOrdering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type Collection_Roles_StreamCursorValueInput = {
-  collectionId?: InputMaybe<Scalars['String']>;
-  createdAt?: InputMaybe<Scalars['timestamptz']>;
-  role?: InputMaybe<Scalars['String']>;
-  updatedAt?: InputMaybe<Scalars['timestamptz']>;
-  userId?: InputMaybe<Scalars['uuid']>;
-};
-
-/** Streaming cursor of the table "collections" */
-export type Collections_StreamCursorInput = {
-  /** Stream column input with initial value */
-  initialValue: Collections_StreamCursorValueInput;
-  /** cursor ordering */
-  ordering?: InputMaybe<CursorOrdering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type Collections_StreamCursorValueInput = {
-  createdAt?: InputMaybe<Scalars['timestamptz']>;
-  id?: InputMaybe<Scalars['String']>;
-  name?: InputMaybe<Scalars['String']>;
-  updatedAt?: InputMaybe<Scalars['timestamptz']>;
 };
 
 /** mutation root */
@@ -1513,7 +1536,7 @@ export type Mutation_RootUpdateBookmarksByPkArgs = {
   _deleteKey?: InputMaybe<BookmarksDeleteKeyInput>;
   _prepend?: InputMaybe<BookmarksPrependInput>;
   _set?: InputMaybe<BookmarksSetInput>;
-  pk_columns: BookmarksPkColumnsInput;
+  pkColumns: BookmarksPkColumnsInput;
 };
 
 
@@ -1543,7 +1566,7 @@ export type Mutation_RootUpdateCacheByPkArgs = {
   _deleteKey?: InputMaybe<CacheDeleteKeyInput>;
   _prepend?: InputMaybe<CachePrependInput>;
   _set?: InputMaybe<CacheSetInput>;
-  pk_columns: CachePkColumnsInput;
+  pkColumns: CachePkColumnsInput;
 };
 
 
@@ -1563,7 +1586,7 @@ export type Mutation_RootUpdateCollectionRolesArgs = {
 /** mutation root */
 export type Mutation_RootUpdateCollectionRolesByPkArgs = {
   _set?: InputMaybe<CollectionRolesSetInput>;
-  pk_columns: CollectionRolesPkColumnsInput;
+  pkColumns: CollectionRolesPkColumnsInput;
 };
 
 
@@ -1583,7 +1606,7 @@ export type Mutation_RootUpdateCollectionsArgs = {
 /** mutation root */
 export type Mutation_RootUpdateCollectionsByPkArgs = {
   _set?: InputMaybe<CollectionsSetInput>;
-  pk_columns: CollectionsPkColumnsInput;
+  pkColumns: CollectionsPkColumnsInput;
 };
 
 
@@ -1603,7 +1626,7 @@ export type Mutation_RootUpdateUsersArgs = {
 /** mutation root */
 export type Mutation_RootUpdateUsersByPkArgs = {
   _set?: InputMaybe<UsersSetInput>;
-  pk_columns: UsersPkColumnsInput;
+  pkColumns: UsersPkColumnsInput;
 };
 
 
@@ -1832,7 +1855,7 @@ export type Subscription_RootBookmarksByPkArgs = {
 
 export type Subscription_RootBookmarksStreamArgs = {
   batchSize: Scalars['Int'];
-  cursor: Array<InputMaybe<Bookmarks_StreamCursorInput>>;
+  cursor: Array<InputMaybe<BookmarksStreamCursorInput>>;
   where?: InputMaybe<BookmarksBoolExp>;
 };
 
@@ -1862,7 +1885,7 @@ export type Subscription_RootCacheByPkArgs = {
 
 export type Subscription_RootCacheStreamArgs = {
   batchSize: Scalars['Int'];
-  cursor: Array<InputMaybe<Cache_StreamCursorInput>>;
+  cursor: Array<InputMaybe<CacheStreamCursorInput>>;
   where?: InputMaybe<CacheBoolExp>;
 };
 
@@ -1893,7 +1916,7 @@ export type Subscription_RootCollectionRolesByPkArgs = {
 
 export type Subscription_RootCollectionRolesStreamArgs = {
   batchSize: Scalars['Int'];
-  cursor: Array<InputMaybe<Collection_Roles_StreamCursorInput>>;
+  cursor: Array<InputMaybe<CollectionRolesStreamCursorInput>>;
   where?: InputMaybe<CollectionRolesBoolExp>;
 };
 
@@ -1923,7 +1946,7 @@ export type Subscription_RootCollectionsByPkArgs = {
 
 export type Subscription_RootCollectionsStreamArgs = {
   batchSize: Scalars['Int'];
-  cursor: Array<InputMaybe<Collections_StreamCursorInput>>;
+  cursor: Array<InputMaybe<CollectionsStreamCursorInput>>;
   where?: InputMaybe<CollectionsBoolExp>;
 };
 
@@ -1953,26 +1976,8 @@ export type Subscription_RootUsersByPkArgs = {
 
 export type Subscription_RootUsersStreamArgs = {
   batchSize: Scalars['Int'];
-  cursor: Array<InputMaybe<Users_StreamCursorInput>>;
+  cursor: Array<InputMaybe<UsersStreamCursorInput>>;
   where?: InputMaybe<UsersBoolExp>;
-};
-
-/** Streaming cursor of the table "users" */
-export type Users_StreamCursorInput = {
-  /** Stream column input with initial value */
-  initialValue: Users_StreamCursorValueInput;
-  /** cursor ordering */
-  ordering?: InputMaybe<CursorOrdering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type Users_StreamCursorValueInput = {
-  createdAt?: InputMaybe<Scalars['timestamptz']>;
-  email?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  name?: InputMaybe<Scalars['String']>;
-  photo?: InputMaybe<Scalars['String']>;
-  updatedAt?: InputMaybe<Scalars['timestamptz']>;
 };
 
 export type InsertBookmarkMutationVariables = Exact<{
@@ -2093,17 +2098,17 @@ export const BookmarkFragmentDoc = {"kind":"Document","definitions":[{"kind":"Fr
 export const BookmarkDetailsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BookmarkDetails"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Bookmarks"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"Bookmark"}},{"kind":"Field","name":{"kind":"Name","value":"createdBy"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}},{"kind":"Field","name":{"kind":"Name","value":"articleData"}},{"kind":"Field","name":{"kind":"Name","value":"embedData"}},{"kind":"Field","name":{"kind":"Name","value":"text"}},{"kind":"Field","name":{"kind":"Name","value":"html"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"Bookmark"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Bookmarks"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"image"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"collectionId"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}}]} as unknown as DocumentNode<BookmarkDetailsFragment, unknown>;
 export const UserFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Users"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"photo"}}]}}]} as unknown as DocumentNode<UserFieldsFragment, unknown>;
 export const InsertBookmarkDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"InsertBookmark"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"BookmarksInsertInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"bookmark"},"name":{"kind":"Name","value":"insertBookmarksOne"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<InsertBookmarkMutation, InsertBookmarkMutationVariables>;
-export const UpdateBookmarkDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateBookmark"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"BookmarksSetInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"bookmark"},"name":{"kind":"Name","value":"updateBookmarksByPk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"_set"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}},{"kind":"Argument","name":{"kind":"Name","value":"pk_columns"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UpdateBookmarkMutation, UpdateBookmarkMutationVariables>;
+export const UpdateBookmarkDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateBookmark"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"BookmarksSetInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"bookmark"},"name":{"kind":"Name","value":"updateBookmarksByPk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"_set"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}},{"kind":"Argument","name":{"kind":"Name","value":"pkColumns"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UpdateBookmarkMutation, UpdateBookmarkMutationVariables>;
 export const DeleteBookmarkDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteBookmark"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"bookmark"},"name":{"kind":"Name","value":"deleteBookmarksByPk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<DeleteBookmarkMutation, DeleteBookmarkMutationVariables>;
 export const GetBookmarksByCollectionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetBookmarksByCollection"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"collectionId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"bookmarks"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"collectionId"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"collectionId"}}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"createdAt"},"value":{"kind":"EnumValue","value":"DESC"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"Bookmark"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"Bookmark"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Bookmarks"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"image"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"collectionId"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}}]} as unknown as DocumentNode<GetBookmarksByCollectionQuery, GetBookmarksByCollectionQueryVariables>;
 export const GetBookmarksByUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetBookmarksByUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"bookmarks"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"createdById"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"createdAt"},"value":{"kind":"EnumValue","value":"DESC"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"Bookmark"}},{"kind":"Field","name":{"kind":"Name","value":"collection"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"Bookmark"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Bookmarks"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"image"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"collectionId"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}}]} as unknown as DocumentNode<GetBookmarksByUserQuery, GetBookmarksByUserQueryVariables>;
 export const GetBookmarkByIdDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetBookmarkById"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"bookmark"},"name":{"kind":"Name","value":"bookmarksByPk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"BookmarkDetails"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"Bookmark"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Bookmarks"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"image"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"collectionId"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BookmarkDetails"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Bookmarks"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"Bookmark"}},{"kind":"Field","name":{"kind":"Name","value":"createdBy"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}},{"kind":"Field","name":{"kind":"Name","value":"articleData"}},{"kind":"Field","name":{"kind":"Name","value":"embedData"}},{"kind":"Field","name":{"kind":"Name","value":"text"}},{"kind":"Field","name":{"kind":"Name","value":"html"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}}]} as unknown as DocumentNode<GetBookmarkByIdQuery, GetBookmarkByIdQueryVariables>;
 export const GetCacheItemDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetCacheItem"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"key"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"item"},"name":{"kind":"Name","value":"cacheByPk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"key"},"value":{"kind":"Variable","name":{"kind":"Name","value":"key"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"key"}},{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"expires"}}]}}]}}]} as unknown as DocumentNode<GetCacheItemQuery, GetCacheItemQueryVariables>;
-export const SetCacheItemDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SetCacheItem"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CacheInsertInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"item"},"name":{"kind":"Name","value":"insertCacheOne"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}},{"kind":"Argument","name":{"kind":"Name","value":"onConflict"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"constraint"},"value":{"kind":"EnumValue","value":"cache_pkey"}},{"kind":"ObjectField","name":{"kind":"Name","value":"update_columns"},"value":{"kind":"ListValue","values":[{"kind":"EnumValue","value":"value"},{"kind":"EnumValue","value":"expires"}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"key"}},{"kind":"Field","name":{"kind":"Name","value":"expires"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}}]}}]} as unknown as DocumentNode<SetCacheItemMutation, SetCacheItemMutationVariables>;
-export const CreateCollectionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateCollection"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"collection"},"name":{"kind":"Name","value":"insertCollectionsOne"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"roles"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"data"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"role"},"value":{"kind":"StringValue","value":"owner","block":false}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"onConflict"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"constraint"},"value":{"kind":"EnumValue","value":"collection_roles_pkey"}},{"kind":"ObjectField","name":{"kind":"Name","value":"update_columns"},"value":{"kind":"ListValue","values":[{"kind":"EnumValue","value":"role"}]}}]}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"onConflict"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"constraint"},"value":{"kind":"EnumValue","value":"collections_pkey"}},{"kind":"ObjectField","name":{"kind":"Name","value":"update_columns"},"value":{"kind":"ListValue","values":[{"kind":"EnumValue","value":"name"}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<CreateCollectionMutation, CreateCollectionMutationVariables>;
+export const SetCacheItemDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SetCacheItem"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CacheInsertInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"item"},"name":{"kind":"Name","value":"insertCacheOne"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}},{"kind":"Argument","name":{"kind":"Name","value":"onConflict"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"constraint"},"value":{"kind":"EnumValue","value":"cache_pkey"}},{"kind":"ObjectField","name":{"kind":"Name","value":"updateColumns"},"value":{"kind":"ListValue","values":[{"kind":"EnumValue","value":"value"},{"kind":"EnumValue","value":"expires"}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"key"}},{"kind":"Field","name":{"kind":"Name","value":"expires"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}}]}}]} as unknown as DocumentNode<SetCacheItemMutation, SetCacheItemMutationVariables>;
+export const CreateCollectionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateCollection"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"collection"},"name":{"kind":"Name","value":"insertCollectionsOne"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"roles"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"data"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"role"},"value":{"kind":"StringValue","value":"owner","block":false}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"onConflict"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"constraint"},"value":{"kind":"EnumValue","value":"collection_roles_pkey"}},{"kind":"ObjectField","name":{"kind":"Name","value":"updateColumns"},"value":{"kind":"ListValue","values":[{"kind":"EnumValue","value":"role"}]}}]}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"onConflict"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"constraint"},"value":{"kind":"EnumValue","value":"collections_pkey"}},{"kind":"ObjectField","name":{"kind":"Name","value":"updateColumns"},"value":{"kind":"ListValue","values":[{"kind":"EnumValue","value":"name"}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<CreateCollectionMutation, CreateCollectionMutationVariables>;
 export const GetUsersByEmailDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetUsersByEmail"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"users"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"IntValue","value":"1"}},{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"email"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_ilike"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Users"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"photo"}}]}}]} as unknown as DocumentNode<GetUsersByEmailQuery, GetUsersByEmailQueryVariables>;
 export const GetUserRolesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetUserRoles"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"user"},"name":{"kind":"Name","value":"usersByPk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"roles"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"role"}},{"kind":"Field","name":{"kind":"Name","value":"collection"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetUserRolesQuery, GetUserRolesQueryVariables>;
 export const GetUserByIdDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetUserById"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"user"},"name":{"kind":"Name","value":"usersByPk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserFields"}},{"kind":"Field","name":{"kind":"Name","value":"roles"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"collection"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"EnumValue","value":"ASC"}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"role"}},{"kind":"Field","name":{"kind":"Name","value":"collection"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Users"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"photo"}}]}}]} as unknown as DocumentNode<GetUserByIdQuery, GetUserByIdQueryVariables>;
 export const GetAllUsersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetAllUsers"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"users"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Users"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"photo"}}]}}]} as unknown as DocumentNode<GetAllUsersQuery, GetAllUsersQueryVariables>;
-export const UpdateUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"updates"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"UsersSetInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"user"},"name":{"kind":"Name","value":"updateUsersByPk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"pk_columns"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"_set"},"value":{"kind":"Variable","name":{"kind":"Name","value":"updates"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Users"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"photo"}}]}}]} as unknown as DocumentNode<UpdateUserMutation, UpdateUserMutationVariables>;
+export const UpdateUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"updates"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"UsersSetInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"user"},"name":{"kind":"Name","value":"updateUsersByPk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"pkColumns"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"_set"},"value":{"kind":"Variable","name":{"kind":"Name","value":"updates"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Users"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"photo"}}]}}]} as unknown as DocumentNode<UpdateUserMutation, UpdateUserMutationVariables>;
 export const InsertUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"InsertUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"photo"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"user"},"name":{"kind":"Name","value":"insertUsersOne"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"photo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"photo"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Users"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"photo"}}]}}]} as unknown as DocumentNode<InsertUserMutation, InsertUserMutationVariables>;

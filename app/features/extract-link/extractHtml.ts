@@ -1,9 +1,11 @@
-import puppeteer from "puppeteer";
-
 export const extractHtml = async (url: string) => {
   try {
+    let puppeteer =
+      process.env.PUBLIC_ENV === "PROD"
+        ? await import("puppeteer-core")
+        : await import("puppeteer");
     const browser = await puppeteer.launch({
-      // executablePath: process.env.CHROME_BIN,
+      executablePath: process.env.PUBLIC_ENV === "PROD" ? process.env.CHROME_BIN : undefined,
       args: [
         // Required for Docker version of Puppeteer
         "--no-sandbox",
@@ -15,7 +17,7 @@ export const extractHtml = async (url: string) => {
     });
     const page = await browser.newPage();
     await page.goto(url, { waitUntil: "networkidle2" });
-    // const pageContent = await page.$eval("body", (body) => body.innerHTML);
+    // const pageContent = await page.$eval("body", (bod) => body.innerHTML);
     // await wait(5000);
     const pageContent = await page.content();
     await browser.close();

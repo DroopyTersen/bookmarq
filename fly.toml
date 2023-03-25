@@ -1,11 +1,15 @@
+# fly.toml file generated for bookmarq on 2023-03-24T18:21:17-06:00
+
+app = "bookmarq"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []
 
 [env]
+  OAUTH_CLIENT_ID= "ICBuNrmkZAjx0PSbJlhZNCo16ZK8pioQ"
+  AUTH0_TENANT = "droopytersen"
+  HASURA_GRAPHQL_ENDPOINT = "https://bookmarq-hasura.fly.dev"
   PUBLIC_ENV = "PROD"
-  HASURA_GRAPHQL_ENDPOINT="https://YOUR_APP-hasura.fly.dev"
-  AUTH0_TENANT="droopytersen"
 
 [experimental]
   auto_rollback = true

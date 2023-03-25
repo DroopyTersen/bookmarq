@@ -1,5 +1,4 @@
 import { Readability } from "@mozilla/readability";
-import { DOMParser } from "linkedom";
 import { HTMLDocument } from "linkedom/types/html/document";
 
 import prettier from "prettier";
@@ -13,11 +12,13 @@ export const extractArticle = async (
   console.log("🚀 | url1:", url);
   const { extractFromHtml } = await import("@extractus/article-extractor");
   try {
+    let DOMParser = await import("linkedom").then((m) => m.DOMParser);
     const doc = new DOMParser().parseFromString(html, "text/html");
     const base = doc.createElement("base");
     base.setAttribute("href", url);
     doc.head.appendChild(base as any);
     html = cleanUpCodeBlocks(doc);
+    console.log("🚀 | html:", html);
     const reader = new Readability(doc as any, {
       keepClasses: true,
       debug: true,
@@ -38,7 +39,7 @@ export const extractArticle = async (
     let result: ExtractedArticleData = {
       ...metadata,
       text: readerResult?.textContent,
-      html: readerResult?.content || "",
+      html: content || "",
       url,
     };
 

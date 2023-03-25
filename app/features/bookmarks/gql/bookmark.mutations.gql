@@ -5,7 +5,7 @@ mutation InsertBookmark($input: BookmarksInsertInput!) {
 }
 
 mutation UpdateBookmark($id: String!, $input: BookmarksSetInput!) {
-  bookmark: updateBookmarksByPk(_set: $input, pk_columns: { id: $id }) {
+  bookmark: updateBookmarksByPk(_set: $input, pkColumns: { id: $id }) {
     id
   }
 }

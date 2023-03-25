@@ -12,6 +12,7 @@ export const loader = async ({ request }: LoaderArgs) => {
   }
   let gqlClient = createUserGqlClient(auth.hasuraToken);
   let collections = (await getUserCollections(gqlClient, auth.userId)) || [];
+  console.log("🚀 | loader | collections:", collections);
   // For now default to the first collection
   if (collections?.length > 0) {
     let url = new URL(request.url);

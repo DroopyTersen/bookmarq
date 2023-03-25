@@ -76,6 +76,34 @@ hasura migrate apply --endpoint https://YOUR-APP.up.railway.app --database-name 
 hasura metadata reload --endpoint https://YOUR-APP.up.railway.app --admin-secret YOUR_SECRET
 ```
 
+## Deploy to Fly.io
+
+Setup infrastructure
+
+```
+fly auth login
+# Create a Postgres instance
+fly pg create --name bookmarq-db --org personal --region den
+cd hasura
+fly launch --name bookmarq-hasura --no-deploy --region den --org personal
+cat .env | fly secrets import --app bookmarq-hasura
+fly secrets set --app bookmarq-hasura DATABASE_URL=
+```
+
+Migrate schema
+
+```
+hasura migrate apply --database-name default --endpoint https://bookmarq-hasura.fly.dev --admin-secret Shh
+
+hasura metadata apply --endpoint --endpoint https://bookmarq-hasura.fly.dev --admin-secret Shh
+```
+
+Deploy web app
+
+```
+fly launch --name bookmarq --no-deploy --region den --org personal
+```
+
 ## Tech Stack
 
 - Remix
