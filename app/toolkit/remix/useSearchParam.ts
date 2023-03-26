@@ -1,7 +1,7 @@
 import { useSearchParams } from "@remix-run/react";
 import { useMemo } from "react";
 
-export const useSearchParam = (key, defaultValue = "") => {
+export const useSearchParam = (key: string, defaultValue = "") => {
   let [searchParams, setSearchParams] = useSearchParams();
   let setValue = useMemo(() => {
     return (value: string) => {
@@ -15,8 +15,5 @@ export const useSearchParam = (key, defaultValue = "") => {
     };
   }, [key, searchParams]);
 
-  return [searchParams.get(key) || defaultValue, setValue] as [
-    string,
-    typeof setValue
-  ];
+  return [searchParams.get(key) || defaultValue, setValue] as [string, typeof setValue];
 };
