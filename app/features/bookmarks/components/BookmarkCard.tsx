@@ -1,13 +1,16 @@
 import { Link } from "@remix-run/react";
 import { FiExternalLink } from "react-icons/fi";
 import { Img } from "~/toolkit/components/image/Img";
-import { Bookmark } from "../bookmarks.schema";
 
 interface BookmarkCardProps {
-  bookmark: Bookmark;
+  id: string;
+  title?: string | null;
+  image?: string | null;
+  url: string;
+  description?: string | null;
 }
 
-export function BookmarkCard({ bookmark }: BookmarkCardProps) {
+export function BookmarkCard(bookmark: BookmarkCardProps) {
   let bookmarkUrl = new URL(bookmark.url);
 
   return (

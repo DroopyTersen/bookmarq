@@ -23,19 +23,33 @@ fragment BookmarkDetails on Bookmarks {
   updatedAt
 }
 query GetBookmarksByCollection($collectionId: String!) {
-  bookmarks(
-    where: { collectionId: { _eq: $collectionId } }
-    orderBy: { createdAt: DESC }
-  ) {
+  bookmarks(where: { collectionId: { _eq: $collectionId } }, orderBy: { createdAt: DESC }) {
     ...Bookmark
+  }
+}
+query GetBookmarksCountByCollection($collectionId: String!) {
+  bookmarksAggregate(where: { collectionId: { _eq: $collectionId } }) {
+    aggregate {
+      count
+    }
+  }
+}
+
+query GetBookmarksByCollectionForSearchImport($collectionId: String!) {
+  bookmarks(where: { collectionId: { _eq: $collectionId } }, orderBy: { createdAt: DESC }) {
+    ...Bookmark
+    createdBy {
+      id
+      name
+      email
+    }
+    text
+    createdAt
   }
 }
 
 query GetBookmarksByUser($userId: uuid!) {
-  bookmarks(
-    where: { createdById: { _eq: $userId } }
-    orderBy: { createdAt: DESC }
-  ) {
+  bookmarks(where: { createdById: { _eq: $userId } }, orderBy: { createdAt: DESC }) {
     ...Bookmark
     collection {
       name

@@ -104,6 +104,16 @@ Deploy web app
 fly launch --name bookmarq --no-deploy --region den --org personal
 ```
 
+Deploy Typesense
+
+```
+cd typesense
+fly launch --no-deploy --name bookmarq-typesense --region den --org personal --copy-config
+fly scale memory 512 --app bookmarq-typesense
+cat .env | fly secrets import --app bookmarq-typesense
+fly deploy --app bookmarq-typesense
+```
+
 ## Tech Stack
 
 - Remix
