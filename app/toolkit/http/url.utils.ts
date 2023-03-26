@@ -33,12 +33,17 @@ export const ensureHttps = (requestUrl: string | URL): URL => {
 };
 
 /** Looks for an returnTo or returnTo query param. Also ensuresHttps */
-export const getReturnToUrl = (requestUrl: string | URL, fallback = ""): string => {
+export const getReturnToUrl = (
+  requestUrl: string | URL,
+  fallback = ""
+): string => {
   if (!requestUrl) return "";
 
   let url = new URL(requestUrl);
   let returnTo = new URL(
-    url.searchParams.get("returnTo") || url.searchParams.get("returnTo") || fallback,
+    url.searchParams.get("returnTo") ||
+      url.searchParams.get("returnTo") ||
+      fallback,
     url.origin
   );
 
@@ -64,7 +69,10 @@ export const getParentPath = (urlStr: string) => {
   if (!urlStr) return "";
   let url = new URL(urlStr);
 
-  let [, ...reversedParentParts] = url.pathname.split("/").filter(Boolean).reverse();
+  let [, ...reversedParentParts] = url.pathname
+    .split("/")
+    .filter(Boolean)
+    .reverse();
 
   url.pathname = reversedParentParts.reverse().join("/");
 

@@ -1,12 +1,17 @@
 export const readCookie = (fullCookieString = "", key: string): string => {
   const cookieValue = (
-    fullCookieString?.split("; ")?.find((row) => row.startsWith(`${key}=`)) || ""
+    fullCookieString?.split("; ")?.find((row) => row.startsWith(`${key}=`)) ||
+    ""
   ).split?.("=")?.[1];
 
   return cookieValue || "";
 };
 
-export const createCookie = (key: string, value: string, durationMS?: number): string => {
+export const createCookie = (
+  key: string,
+  value: string,
+  durationMS?: number
+): string => {
   let exipiresStr = "";
 
   if (durationMS) {

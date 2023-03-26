@@ -33,7 +33,10 @@ export const loader = async ({ request }: LoaderArgs) => {
   let userSession = await authSession.get(request);
   let user;
   if (userSession?.userId && userSession?.hasuraToken) {
-    user = await getUserById(createUserGqlClient(userSession.hasuraToken), userSession.userId);
+    user = await getUserById(
+      createUserGqlClient(userSession.hasuraToken),
+      userSession.userId
+    );
   }
   return json({
     user,
@@ -43,7 +46,11 @@ export const loader = async ({ request }: LoaderArgs) => {
 
 export default function App() {
   return (
-    <html lang="en" data-theme="droopy-theme" className="flex flex-col min-h-full">
+    <html
+      lang="en"
+      data-theme="droopy-theme"
+      className="flex flex-col min-h-full"
+    >
       <head>
         <Meta />
         <Links />
@@ -59,7 +66,10 @@ export default function App() {
     </html>
   );
 }
-export const shouldRevalidate: ShouldRevalidateFunction = ({ formData, formMethod }) => {
+export const shouldRevalidate: ShouldRevalidateFunction = ({
+  formData,
+  formMethod,
+}) => {
   let hasSubmission = !!formData && formMethod !== "get";
   return hasSubmission;
 };

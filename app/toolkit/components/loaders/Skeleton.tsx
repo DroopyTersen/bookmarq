@@ -3,7 +3,10 @@ interface SkeletonProps {
   className?: string;
 }
 
-export function Skeleton({ color = "gray-200", className = "" }: SkeletonProps) {
+export function Skeleton({
+  color = "gray-200",
+  className = "",
+}: SkeletonProps) {
   return (
     <div className={`relative w-full bg-transparent py-4 ${className}`}>
       <div className="flex space-x-4 animate-pulse">

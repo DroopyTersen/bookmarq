@@ -52,8 +52,13 @@ export function BookmarkCard(bookmark: BookmarkCardProps) {
           )}
         </div>
         <div className="justify-end card-actions">
-          <a className="gap-2 btn btn-primary btn-sm" target="_blank" href={bookmark?.url}>
-            <FiExternalLink className="opacity-80 relative -top-[1px]" /> Open Url
+          <a
+            className="gap-2 btn btn-primary btn-sm"
+            target="_blank"
+            href={bookmark?.url}
+          >
+            <FiExternalLink className="opacity-80 relative -top-[1px]" /> Open
+            Url
           </a>
         </div>
       </div>

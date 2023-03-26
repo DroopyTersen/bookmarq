@@ -65,8 +65,17 @@ export function Badge({
           onClick={() => onRemove()}
         >
           <span className="sr-only">Remove</span>
-          <svg className="w-2 h-2" stroke="currentColor" fill="none" viewBox="0 0 8 8">
-            <path strokeLinecap="round" strokeWidth="1.5" d="M1 1l6 6m0-6L1 7" />
+          <svg
+            className="w-2 h-2"
+            stroke="currentColor"
+            fill="none"
+            viewBox="0 0 8 8"
+          >
+            <path
+              strokeLinecap="round"
+              strokeWidth="1.5"
+              d="M1 1l6 6m0-6L1 7"
+            />
           </svg>
         </button>
       )}

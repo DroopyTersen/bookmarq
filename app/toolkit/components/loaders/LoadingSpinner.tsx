@@ -1,6 +1,8 @@
 export function LoadingSpinner({ color = "gray-500", className = "" }) {
   return (
-    <div className={`flex justify-center items-center py-4 mx-auto text-${color} ${className}`}>
+    <div
+      className={`flex justify-center items-center py-4 mx-auto text-${color} ${className}`}
+    >
       <Spinner />
     </div>
   );

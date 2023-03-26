@@ -15,5 +15,8 @@ export const useSearchParam = (key: string, defaultValue = "") => {
     };
   }, [key, searchParams]);
 
-  return [searchParams.get(key) || defaultValue, setValue] as [string, typeof setValue];
+  return [searchParams.get(key) || defaultValue, setValue] as [
+    string,
+    typeof setValue
+  ];
 };

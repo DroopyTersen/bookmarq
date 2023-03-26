@@ -22,13 +22,20 @@ export const loader = async ({ request, params }: LoaderArgs) => {
   let { gqlClient } = await requireAuthenticatedLoader(request);
   let searchCriteria = zx.parseQuery(request, BookmarkSearchCriteriaSchema);
   if (searchCriteria?.q) {
-    let searchResults = await searchBookmarks(gqlClient, params.collectionId + "", searchCriteria);
+    let searchResults = await searchBookmarks(
+      gqlClient,
+      params.collectionId + "",
+      searchCriteria
+    );
 
     return {
       searchResults,
     };
   } else {
-    let recentBookmarks = await getBookmarksByCollection(gqlClient, params.collectionId + "");
+    let recentBookmarks = await getBookmarksByCollection(
+      gqlClient,
+      params.collectionId + ""
+    );
     return { recentBookmarks };
   }
 };
@@ -63,7 +70,8 @@ export default () => {
           <h2 className="mb-4 text-2xl font-bold text-gray-200">{pageTitle}</h2>
           {data?.searchResults && (
             <div className="stats">
-              Found {data?.searchResults?.found} out of {data.searchResults?.out_of}
+              Found {data?.searchResults?.found} out of{" "}
+              {data.searchResults?.out_of}
             </div>
           )}
         </div>
@@ -81,7 +89,11 @@ export default () => {
   );
 };
 
-function BookmarkSearchResult({ hit }: { hit: BookmarkSearchResults["hits"][number] }) {
+function BookmarkSearchResult({
+  hit,
+}: {
+  hit: BookmarkSearchResults["hits"][number];
+}) {
   return (
     <div>
       <h3>{hit.document.title}</h3>

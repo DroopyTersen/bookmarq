@@ -80,14 +80,20 @@ export const createSearchService = (collectionId: string) => {
   };
 };
 
-type BookmarkFromDb = GetBookmarksByCollectionForSearchImportQuery["bookmarks"][number];
-export type BookmarkSearchDocument = TypeSenseCollectionDocument<typeof bookmarkSearchFields>;
+type BookmarkFromDb =
+  GetBookmarksByCollectionForSearchImportQuery["bookmarks"][number];
+export type BookmarkSearchDocument = TypeSenseCollectionDocument<
+  typeof bookmarkSearchFields
+>;
 
 export const fullCrawlForCollection = async (collectionId: string) => {
   let adminClient = createAdminGqlClient();
-  let data = await adminClient.request(GetBookmarksByCollectionForSearchImportDocument, {
-    collectionId,
-  });
+  let data = await adminClient.request(
+    GetBookmarksByCollectionForSearchImportDocument,
+    {
+      collectionId,
+    }
+  );
   let searchService = await createSearchService(collectionId);
   await searchService.bookmarks.deleteCollection();
   await importSearchDocuments(collectionId, data.bookmarks);
@@ -101,15 +107,22 @@ export const fullCrawlForCollection = async (collectionId: string) => {
   };
 };
 
-export const importSearchDocuments = async (collectionId: string, bookmarks: BookmarkFromDb[]) => {
-  let searchDocs = bookmarks?.map(toTypesenseDocument).filter(Boolean) as BookmarkSearchDocument[];
+export const importSearchDocuments = async (
+  collectionId: string,
+  bookmarks: BookmarkFromDb[]
+) => {
+  let searchDocs = bookmarks
+    ?.map(toTypesenseDocument)
+    .filter(Boolean) as BookmarkSearchDocument[];
   let searchService = await createSearchService(collectionId);
   if (searchDocs?.length) {
     await searchService.bookmarks.importDocuments(searchDocs);
   }
 };
 
-const toTypesenseDocument = (dbItem: BookmarkFromDb): BookmarkSearchDocument | null => {
+const toTypesenseDocument = (
+  dbItem: BookmarkFromDb
+): BookmarkSearchDocument | null => {
   try {
     let url = new URL(dbItem.url);
 

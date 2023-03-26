@@ -5,7 +5,8 @@ export const extractHtml = async (url: string) => {
         ? await import("puppeteer-core")
         : await import("puppeteer");
     const browser = await puppeteer.launch({
-      executablePath: process.env.PUBLIC_ENV === "PROD" ? process.env.CHROME_BIN : undefined,
+      executablePath:
+        process.env.PUBLIC_ENV === "PROD" ? process.env.CHROME_BIN : undefined,
       args: [
         // Required for Docker version of Puppeteer
         "--no-sandbox",

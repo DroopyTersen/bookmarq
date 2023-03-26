@@ -5,7 +5,10 @@ import {
   requireAuthenticatedAction,
   requireAuthenticatedLoader,
 } from "~/features/auth/auth.remix.server";
-import { deleteBookmark, getBookmarkById } from "~/features/bookmarks/bookmarks.data.server";
+import {
+  deleteBookmark,
+  getBookmarkById,
+} from "~/features/bookmarks/bookmarks.data.server";
 import { BookmarkDetails } from "~/features/bookmarks/bookmarks.schema";
 import { ArticleDisplay } from "~/features/bookmarks/components/articles/ArticleDisplay";
 import { EmbedDisplay } from "~/features/bookmarks/components/embeds/EmbedDisplay";
@@ -26,7 +29,12 @@ export default function () {
     <main className="relative w-full p-2 mx-auto mt-4 shadow-lg bookmark-toolbar md:max-w-3xl bg-base-200 rounded-xl sm:p-4">
       <header className="sticky top-0 z-10 flex justify-between w-full bookmark-toolbar bg-base-200 ">
         <div className="toolbar-start">
-          <Link to={backUrl} className="btn btn-ghost btn-circle" title="back" prefetch="intent">
+          <Link
+            to={backUrl}
+            className="btn btn-ghost btn-circle"
+            title="back"
+            prefetch="intent"
+          >
             <BsArrowLeftShort size={34} />
           </Link>
         </div>
@@ -53,7 +61,12 @@ export default function () {
       <div className="relative w-full p-2 pb-8 mx-auto md:max-w-3xl">
         <div className="flex justify-between">
           <div className="relative flex items-center gap-1 mb-2 sm:mb-4 md:mb-8">
-            <a href={bookmark?.url} target="_blank" className="link link-hover" title="Open URL">
+            <a
+              href={bookmark?.url}
+              target="_blank"
+              className="link link-hover"
+              title="Open URL"
+            >
               <h1 className="text-xl font-bold md:text-3xl">
                 {bookmark?.title || "Missing Title"}
               </h1>
@@ -92,7 +105,9 @@ const BookmarkIntents = {
   DELETE: "delete-bookmark",
 };
 export const action = async ({ request, params }: ActionArgs) => {
-  let { gqlClient, intent, returnTo } = await requireAuthenticatedAction(request);
+  let { gqlClient, intent, returnTo } = await requireAuthenticatedAction(
+    request
+  );
 
   if (intent === BookmarkIntents.DELETE && params.bookmarkId) {
     await deleteBookmark(gqlClient, params.bookmarkId);

@@ -9,7 +9,10 @@ const CLASS_NAMES = "table w-full";
 
 type TableProps = HTMLProps<HTMLTableElement>;
 
-function TableComponent({ className = "overflow-x-auto", children, ...rest }, ref) {
+function TableComponent(
+  { className = "overflow-x-auto", children, ...rest },
+  ref
+) {
   return (
     <div className="relative mt-4 overflow-x-auto border-b border-gray-200 shadow sm:rounded-lg">
       <table ref={ref} className={`${CLASS_NAMES} ${className}`} {...rest}>

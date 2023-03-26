@@ -1,6 +1,12 @@
 import { z } from "zod";
-import { BookmarkDetailsFragment, BookmarkFragment } from "~/.gql/graphql.types";
-import { ExtractedArticleData, ExtractedEmbedData } from "../extract-link/extract-link.types";
+import {
+  BookmarkDetailsFragment,
+  BookmarkFragment,
+} from "~/.gql/graphql.types";
+import {
+  ExtractedArticleData,
+  ExtractedEmbedData,
+} from "../extract-link/extract-link.types";
 
 export const BookmarkInputSchema = z.object({
   url: z.string().url(),
@@ -27,4 +33,6 @@ export const BookmarkSearchCriteriaSchema = z.object({
   page: z.coerce.number().optional(),
 });
 
-export type BookmarkSearchCriteria = z.infer<typeof BookmarkSearchCriteriaSchema>;
+export type BookmarkSearchCriteria = z.infer<
+  typeof BookmarkSearchCriteriaSchema
+>;

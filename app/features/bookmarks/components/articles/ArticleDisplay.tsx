@@ -21,7 +21,11 @@ export function ArticleDisplay({ bookmark }: { bookmark: BookmarkDetails }) {
     <>
       {bookmark?.image && (
         <div className="flex justify-center mb-4">
-          <a href={bookmark?.url} target="_blank" className="max-w-full link link-hover">
+          <a
+            href={bookmark?.url}
+            target="_blank"
+            className="max-w-full link link-hover"
+          >
             <Img
               src={bookmark?.image}
               initial={bookmark?.image}
@@ -41,7 +45,9 @@ export function ArticleDisplay({ bookmark }: { bookmark: BookmarkDetails }) {
           </div>
         )}
       </div>
-      {tab === "html" && <div className="max-w-full prose" ref={articleRef}></div>}
+      {tab === "html" && (
+        <div className="max-w-full prose" ref={articleRef}></div>
+      )}
       {tab === "text" && (
         <pre className="mt-4 font-sans text-sm whitespace-pre-wrap rounded-lg bg-base-200">
           {bookmark?.text}

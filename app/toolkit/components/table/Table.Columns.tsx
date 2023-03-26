@@ -9,7 +9,10 @@ export type TableColumnsProps = React.HTMLProps<HTMLTableRowElement> &
   };
 
 export const TableColumns = forwardRef<HTMLTableRowElement, TableColumnsProps>(
-  function TableColumns({ sortDir, sortKey, onSort, className = "", children, ...rest }, ref) {
+  function TableColumns(
+    { sortDir, sortKey, onSort, className = "", children, ...rest },
+    ref
+  ) {
     const hasSorting = sortDir && sortKey && onSort;
     const headers = !hasSorting
       ? children

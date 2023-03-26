@@ -62,12 +62,14 @@ export const extractArticle = async (
 
 const cleanUpCodeBlocks = (doc: HTMLDocument) => {
   // get all the code elements
-  const codeElements = Array.from(doc.querySelectorAll("pre")).map((elm: HTMLElement) => {
-    if (elm?.children?.[0]?.tagName === "CODE") {
-      return elm?.children?.[0];
+  const codeElements = Array.from(doc.querySelectorAll("pre")).map(
+    (elm: HTMLElement) => {
+      if (elm?.children?.[0]?.tagName === "CODE") {
+        return elm?.children?.[0];
+      }
+      return elm;
     }
-    return elm;
-  });
+  );
 
   // loop through all the code elements
   for (const codeElement of codeElements) {
@@ -113,7 +115,10 @@ const cleanUpCodeBlocks = (doc: HTMLDocument) => {
 
 const LANGUAGE_CLASSES = ["language-", "lang-", "highlight-source-"];
 const tryGetLanguage = (codeElem: HTMLElement) => {
-  let classList = [...codeElem.classList, ...(codeElem.parentElement?.classList || [])];
+  let classList = [
+    ...codeElem.classList,
+    ...(codeElem.parentElement?.classList || []),
+  ];
   console.log("🚀 | tryGetLanguage | classList:", classList);
   let language = "";
   // Loop through all the classes and see if any of them start with language-* or lang-*
