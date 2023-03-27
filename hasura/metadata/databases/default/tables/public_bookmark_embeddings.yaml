@@ -1,0 +1,60 @@
+table:
+  name: bookmark_embeddings
+  schema: public
+object_relationships:
+  - name: bookmark
+    using:
+      foreign_key_constraint_on: bookmark_id
+insert_permissions:
+  - role: user
+    permission:
+      check:
+        bookmark:
+          collection:
+            roles:
+              user_id:
+                _eq: X-Hasura-User-Id
+      columns:
+        - bookmark_id
+        - chunk
+        - chunk_index
+        - embedding
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - bookmark_id
+        - chunk
+        - chunk_index
+        - embedding
+        - id
+      filter:
+        bookmark:
+          collection:
+            roles:
+              user_id:
+                _eq: X-Hasura-User-Id
+update_permissions:
+  - role: user
+    permission:
+      columns:
+        - bookmark_id
+        - chunk
+        - chunk_index
+        - embedding
+      filter:
+        bookmark:
+          collection:
+            roles:
+              user_id:
+                _eq: X-Hasura-User-Id
+      check: null
+delete_permissions:
+  - role: user
+    permission:
+      filter:
+        bookmark:
+          collection:
+            roles:
+              user_id:
+                _eq: X-Hasura-User-Id

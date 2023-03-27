@@ -37,6 +37,7 @@
     "jsonwebtoken": "^9.0.0",
     "just-safe-get": "^4.2.0",
     "jwt-decode": "^3.1.2",
+    "langchain": "^0.0.41",
     "linkedom": "^0.14.23",
     "match-sorter": "^6.3.1",
     "patch-package": "^6.5.1",

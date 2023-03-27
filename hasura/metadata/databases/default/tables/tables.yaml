@@ -1,3 +1,4 @@
+- "!include public_bookmark_embeddings.yaml"
 - "!include public_bookmarks.yaml"
 - "!include public_cache.yaml"
 - "!include public_collection_roles.yaml"

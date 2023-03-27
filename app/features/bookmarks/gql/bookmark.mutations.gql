@@ -15,4 +15,25 @@ mutation DeleteBookmark($id: String!) {
     id
     collectionId
   }
+  deleteBookmarkEmbeddings(where: { bookmarkId: { _eq: $id } }) {
+    affectedRows
+  }
+}
+
+mutation SaveBookmarkEmbeddings(
+  $bookmarkId: String!
+  $inputs: [BookmarkEmbeddingsInsertInput!]!
+) {
+  deleteBookmarkEmbeddings(where: { bookmarkId: { _eq: $bookmarkId } }) {
+    affectedRows
+  }
+  insertBookmarkEmbeddings(
+    objects: $inputs
+    onConflict: {
+      constraint: bookmark_embeddings_chunk_key
+      updateColumns: [bookmarkId, embedding]
+    }
+  ) {
+    affectedRows
+  }
 }

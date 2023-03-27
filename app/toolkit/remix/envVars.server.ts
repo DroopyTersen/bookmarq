@@ -18,6 +18,7 @@ export const PrivateEnvVarSchema = z.object({
   AUTH0_TENANT: z.string().min(1),
   TYPESENSE_API_KEY: z.string().min(1),
   TYPESENSE_URL: z.string().min(1),
+  OPENAI_API_KEY: z.string().min(1),
 });
 export const EnvVarSchema = PrivateEnvVarSchema.extend(
   PublicEnvVarSchema.shape

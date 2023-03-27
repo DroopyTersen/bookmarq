@@ -8,6 +8,14 @@ object_relationships:
   - name: createdBy
     using:
       foreign_key_constraint_on: created_by_id
+array_relationships:
+  - name: embeddings
+    using:
+      foreign_key_constraint_on:
+        column: bookmark_id
+        table:
+          name: bookmark_embeddings
+          schema: public
 insert_permissions:
   - role: user
     permission:

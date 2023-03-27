@@ -7,8 +7,10 @@ import {
   GetBookmarksCountByCollectionDocument,
   InsertBookmarkDocument,
   InsertBookmarkMutationVariables,
+  SaveBookmarkEmbeddingsDocument,
 } from "~/.gql/graphql.types";
 import { GqlClient } from "~/toolkit/http/createGqlClient";
+import { getBookmarkEmbeddings } from "../embeddings/getEmbeddings";
 import { BookmarkSearchCriteria } from "./bookmarks.schema";
 import {
   createSearchService,
@@ -51,6 +53,26 @@ export const createBookmark = async (
 ) => {
   let data = await gqlClient.request(InsertBookmarkDocument, { input });
   if (data?.bookmark?.id) {
+    let embeddedChunks = await getBookmarkEmbeddings(
+      input.text || "",
+      data?.bookmark?.id
+    );
+    await gqlClient
+      .request(SaveBookmarkEmbeddingsDocument, {
+        bookmarkId: data?.bookmark?.id,
+        inputs: embeddedChunks.map((ec) => ({
+          bookmarkId: ec.bookmark_id,
+          chunk: ec.chunk,
+          embedding: ec.embedding,
+          chunkIndex: ec.index,
+        })),
+      })
+      .catch((err) => {
+        console.log(
+          "🚀 | err saving embeddings",
+          JSON.stringify(err?.response)
+        );
+      });
     let insertedBookmark = await getBookmarkById(gqlClient, data?.bookmark?.id);
     if (insertedBookmark) {
       await importSearchDocuments(insertedBookmark.collectionId, [
