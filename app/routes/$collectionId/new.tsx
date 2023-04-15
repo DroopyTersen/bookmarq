@@ -4,7 +4,7 @@ import { BsArrowLeftShort } from "react-icons/bs";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
 import { requireAuthenticatedAction } from "~/features/auth/auth.remix.server";
-import { createBookmark } from "~/features/bookmarks/bookmarks.data.server";
+import { createBookmarksApi } from "~/features/bookmarks/bookmarks.api.server";
 import { processUrl } from "~/features/bookmarks/processUrl";
 import { getCache } from "~/features/cache/getCache.server";
 import { MainContentCentered } from "~/features/layout/AppLayout";
@@ -83,7 +83,10 @@ export const action = async ({ request, params }: ActionArgs) => {
       { ...formInput, collectionId },
       undefined
     );
-    let bookmark = await createBookmark(gqlClient, bookmarkInput);
+    let bookmark = await createBookmarksApi(
+      gqlClient,
+      collectionId
+    ).saveBookmark(bookmarkInput);
     if (!bookmark) {
       throw new Error("Bookmark not created");
     }

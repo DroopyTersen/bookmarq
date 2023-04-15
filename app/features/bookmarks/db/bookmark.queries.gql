@@ -22,8 +22,12 @@ fragment BookmarkDetails on Bookmarks {
   createdAt
   updatedAt
 }
-query GetBookmarksByCollection($collectionId: String!) {
-  bookmarks(where: { collectionId: { _eq: $collectionId } }, orderBy: { createdAt: DESC }) {
+query GetBookmarksByCollection($collectionId: String!, $limit: Int = 1000) {
+  bookmarks(
+    where: { collectionId: { _eq: $collectionId } }
+    orderBy: { createdAt: DESC }
+    limit: $limit
+  ) {
     ...Bookmark
   }
 }
@@ -36,7 +40,10 @@ query GetBookmarksCountByCollection($collectionId: String!) {
 }
 
 query GetBookmarksByCollectionForSearchImport($collectionId: String!) {
-  bookmarks(where: { collectionId: { _eq: $collectionId } }, orderBy: { createdAt: DESC }) {
+  bookmarks(
+    where: { collectionId: { _eq: $collectionId } }
+    orderBy: { createdAt: DESC }
+  ) {
     ...Bookmark
     createdBy {
       id
@@ -49,7 +56,10 @@ query GetBookmarksByCollectionForSearchImport($collectionId: String!) {
 }
 
 query GetBookmarksByUser($userId: uuid!) {
-  bookmarks(where: { createdById: { _eq: $userId } }, orderBy: { createdAt: DESC }) {
+  bookmarks(
+    where: { createdById: { _eq: $userId } }
+    orderBy: { createdAt: DESC }
+  ) {
     ...Bookmark
     collection {
       name
@@ -61,5 +71,23 @@ query GetBookmarksByUser($userId: uuid!) {
 query GetBookmarkById($id: String!) {
   bookmark: bookmarksByPk(id: $id) {
     ...BookmarkDetails
+    embeddings(orderBy: { chunkIndex: ASC }) {
+      id
+      chunkIndex
+      chunk
+    }
+  }
+}
+
+query GetBookmarkByIdWithEmbedding($id: String!) {
+  bookmark: bookmarksByPk(id: $id) {
+    collectionId
+    ...BookmarkDetails
+    embeddings(orderBy: { chunkIndex: ASC }) {
+      id
+      chunkIndex
+      chunk
+      embedding
+    }
   }
 }

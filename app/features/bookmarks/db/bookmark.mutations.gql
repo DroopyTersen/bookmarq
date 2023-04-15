@@ -1,5 +1,19 @@
-mutation InsertBookmark($input: BookmarksInsertInput!) {
-  bookmark: insertBookmarksOne(object: $input) {
+mutation SaveBookmark($input: BookmarksInsertInput!) {
+  bookmark: insertBookmarksOne(
+    object: $input
+    onConflict: {
+      constraint: bookmarks_url_collection_id_key
+      updateColumns: [
+        articleData
+        title
+        description
+        text
+        html
+        image
+        embedData
+      ]
+    }
+  ) {
     id
   }
 }

@@ -12,7 +12,6 @@ export const requireAuthenticatedLoader = async (request: Request) => {
     gqlClient,
   };
 };
-
 export interface AuthenticatedAction {
   /** Used when multiple forms submit to the same action */
   intent?: string;

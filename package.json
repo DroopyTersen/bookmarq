@@ -19,6 +19,7 @@
     "format": "prettier --write \"app/**/*.{js,jsx,ts,tsx}\""
   },
   "dependencies": {
+    "@dqbd/tiktoken": "^1.0.2",
     "@extractus/article-extractor": "^7.2.9",
     "@extractus/oembed-extractor": "^3.1.8",
     "@radix-ui/react-dialog": "^1.0.2",
@@ -26,7 +27,7 @@
     "@remix-run/react": "^1.14.3",
     "@remix-run/serve": "^1.14.3",
     "dayjs": "^1.11.7",
-    "droopy-typesense": "^0.0.1",
+    "droopy-typesense": "^0.0.2",
     "framer-motion": "^10.0.1",
     "graphql": "^16.6.0",
     "graphql-request": "^5.2.0",

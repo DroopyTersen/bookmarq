@@ -1048,6 +1048,11 @@
   dependencies:
     "@jridgewell/trace-mapping" "0.3.9"
 
+"@dqbd/tiktoken@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@dqbd/tiktoken/-/tiktoken-1.0.2.tgz#f180afc887426343bab2adc41106d04dbd3627c0"
+  integrity sha512-AjGTBRWsMoVmVeN55NLyupyM8TNamOUBl6tj5t/leLDVup3CFGO9tVagNL1jf3GyZLkWZSTmYVbPQ/M2LEcNzw==
+
 "@emotion/babel-plugin@^11.10.6":
   version "11.10.6"
   resolved "https://registry.npmjs.org/@emotion/babel-plugin/-/babel-plugin-11.10.6.tgz"
@@ -4399,10 +4404,10 @@ dotenv@^16.0.0, dotenv@^16.0.3:
   resolved "https://registry.npmjs.org/dotenv/-/dotenv-16.0.3.tgz"
   integrity sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==
 
-droopy-typesense@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/droopy-typesense/-/droopy-typesense-0.0.1.tgz#a6dbb5796324fa601842dbd042b916aa1444535e"
-  integrity sha512-Xs0HeN6S9mLlYfF1J7vYi4znRkQOUrlASkJ9piouxlI8KbukTCY9j8m2iPflNUVxy2v44hOPdLhJDNJWJ2Kn3g==
+droopy-typesense@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/droopy-typesense/-/droopy-typesense-0.0.2.tgz#c106cd9bcc9a791ceea27fd6bebd15e8628e9c09"
+  integrity sha512-j5GXhH/ImUDX6oSgFQ/arihfz+ZmN0AZyzWlTv7eZQWODuTkJt90rci+hTPI8c6nOxwIhf9RZcraw6n5Uq0L6g==
   dependencies:
     typesense "^1.5.3"
 

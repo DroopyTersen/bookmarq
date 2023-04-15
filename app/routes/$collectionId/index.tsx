@@ -2,49 +2,47 @@ import { LoaderArgs } from "@remix-run/node";
 import { Form, useLoaderData } from "@remix-run/react";
 import { zx } from "zodix";
 import { requireAuthenticatedLoader } from "~/features/auth/auth.remix.server";
-import {
-  getBookmarksByCollection,
-  searchBookmarks,
-} from "~/features/bookmarks/bookmarks.data.server";
+import { createBookmarksApi } from "~/features/bookmarks/bookmarks.api.server";
 import { BookmarkSearchCriteriaSchema } from "~/features/bookmarks/bookmarks.schema";
 import { BookmarkCard } from "~/features/bookmarks/components/BookmarkCard";
 import { MainContentCentered } from "~/features/layout/AppLayout";
 import { Input } from "~/toolkit/components/forms";
 import { useSearchParam } from "~/toolkit/remix/useSearchParam";
 
-type BookmarkSearchResults = Awaited<ReturnType<typeof searchBookmarks>>;
-type LoaderData = {
-  recentBookmarks?: Awaited<ReturnType<typeof getBookmarksByCollection>>;
-  searchResults?: BookmarkSearchResults;
-};
+// type LoaderData = {
+//   recentBookmarks?: Awaited<ReturnType<typeof getBookmarksByCollection>>;
+//   searchResults?: BookmarkSearchResults;
+//   semanticResults?: any;
+// };
 
 export const loader = async ({ request, params }: LoaderArgs) => {
   let { gqlClient } = await requireAuthenticatedLoader(request);
+  let bookmarksApi = createBookmarksApi(gqlClient, params.collectionId + "");
   let searchCriteria = zx.parseQuery(request, BookmarkSearchCriteriaSchema);
   if (searchCriteria?.q) {
-    let searchResults = await searchBookmarks(
-      gqlClient,
-      params.collectionId + "",
-      searchCriteria
-    );
+    let searchResults = await bookmarksApi.keywordSearch(searchCriteria);
+    // let semanticResults = await semanticSearch(
+    //   searchCriteria.q,
+    //   params.collectionId + ""
+    // );
 
     return {
       searchResults,
+      semanticResults: null,
+      recentBookmarks: null,
     };
   } else {
-    let recentBookmarks = await getBookmarksByCollection(
-      gqlClient,
-      params.collectionId + ""
-    );
-    return { recentBookmarks };
+    let recentBookmarks = await bookmarksApi.getBookmarksByCollection(10);
+    return { recentBookmarks, searchResults: null, semanticResults: null };
   }
 };
 
 export default () => {
-  let data = useLoaderData<LoaderData>();
+  let data = useLoaderData<typeof loader>();
   let [searchText, setSearchText] = useSearchParam("q");
   let pageTitle = data?.searchResults ? "Search Results" : "Recent Bookmarks";
   console.log("🚀 | searchResults:", data.searchResults);
+  console.log("🚀 | semanticResults:", data.semanticResults);
   return (
     <MainContentCentered>
       <section>
@@ -65,6 +63,11 @@ export default () => {
           />
         </Form>
       </section>
+      {/* {data?.semanticResults?.llmAnswer && (
+        <div className="my-8">
+          <p className="text-lg">{data?.semanticResults.llmAnswer}</p>
+        </div>
+      )} */}
       <section className="mt-8">
         <div className="flex items-center justify-between">
           <h2 className="mb-4 text-2xl font-bold text-gray-200">{pageTitle}</h2>
@@ -88,15 +91,3 @@ export default () => {
     </MainContentCentered>
   );
 };
-
-function BookmarkSearchResult({
-  hit,
-}: {
-  hit: BookmarkSearchResults["hits"][number];
-}) {
-  return (
-    <div>
-      <h3>{hit.document.title}</h3>
-    </div>
-  );
-}

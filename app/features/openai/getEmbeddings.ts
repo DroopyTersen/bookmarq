@@ -3,9 +3,9 @@ import { getEnvVar } from "~/toolkit/remix/envVars.server";
 import { createChunks } from "./createChunks";
 
 export const getBookmarkEmbeddings = async (
-  text: string,
-  bookmarkId: string
+  text: string
 ): Promise<EmbeddedChunk[]> => {
+  if (!text) return [];
   let chunks = (await createChunks(text)).map((d) => {
     console.log("Chunk metadata", d.metadata);
     return d.pageContent;
@@ -16,17 +16,20 @@ export const getBookmarkEmbeddings = async (
       index: embeddedChunk.index,
       embedding: embeddedChunk.embedding,
       chunk: chunks[embeddedChunk.index],
-      bookmark_id: bookmarkId,
     };
   });
   return embeddings;
+};
+
+export const getQueryEmbedding = async (query: string) => {
+  let result = await fetchOpenAIEmbeddings([query]);
+  return result.data[0].embedding;
 };
 
 export interface EmbeddedChunk {
   index: number;
   embedding: number[];
   chunk: string;
-  bookmark_id: string;
 }
 
 interface OpenAIEmbeddingResponse {
