@@ -4,37 +4,30 @@ import { MainContentCentered } from "~/features/layout/AppLayout";
 import { AppErrorBoundary } from "~/toolkit/components/errors/AppErrorBoundary";
 import { LoadingOverlay } from "~/toolkit/components/loaders/LoadingOverlay";
 
-const CHAT_ENDPOINT = "https://api.openai.com/v1/chat/completions";
-const MODEL = "gpt-3.5-turbo";
-
-const fetchChatCompletion = async (prompt: string) => {
-  let reqBody = {
-    model: MODEL,
-    messages: [
-      {
-        role: "user",
-        content: prompt,
-      },
-    ],
-  };
-
-  return fetch(CHAT_ENDPOINT, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-    },
-    body: JSON.stringify(reqBody),
-  });
-};
-
 export const action = async ({ request, params }: ActionArgs) => {
   let formData = await request.formData();
   let message = formData.get("message");
   if (!message) {
     return new Response("Message is required", { status: 400 });
   }
-  return fetchChatCompletion(message + "");
+
+  return fetch("https://api.openai.com/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+    },
+    body: JSON.stringify({
+      model: "gpt-3.5-turbo",
+      stream: true,
+      messages: [
+        {
+          role: "user",
+          content: message,
+        },
+      ],
+    }),
+  });
 };
 
 export default function Demo1() {
@@ -59,13 +52,13 @@ export default function Demo1() {
               name="message"
               className="h-24 textarea textarea-bordered"
               placeholder="Enter your message..."
+              defaultValue="What is 1 + 2? "
             ></textarea>
-            <label className="label">
-              <span className="label-text-alt">Send a message to ChatGPT</span>
-            </label>
           </div>
           <div className="mt-4 ">
-            <button className="w-full btn btn-secondary">Send</button>
+            <button className="w-full btn btn-secondary">
+              Send w/o Streaming
+            </button>
           </div>
         </fieldset>
         {data && (
