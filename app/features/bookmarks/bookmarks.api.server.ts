@@ -72,6 +72,7 @@ export const createBookmarksApi = (
         // Get embeddings
         getBookmarkEmbeddings(input.text || ""),
       ]);
+
       if (!savedBookmark?.id) {
         throw new Error("Failed to save bookmark");
       }
@@ -82,24 +83,20 @@ export const createBookmarksApi = (
           embeddingLenght: embeddedChunk.embedding?.length,
         });
       });
-      let embeddingToInsert = embeddedChunks.map((embeddedChunk) => ({
-        bookmarkId: savedBookmark!.id,
-        chunkIndex: embeddedChunk.index,
-        chunk: embeddedChunk.chunk,
-        embedding: embeddedChunk.embedding,
-      }))?.[0];
-      await gqlClient
-        .request(SaveBookmarkEmbeddingsDocument, {
-          bookmarkId: savedBookmark.id,
-          inputs: embeddingToInsert,
+      let embeddingToInsert = embeddedChunks
+        .filter((ec) => {
+          return ec.embedding?.length && ec.chunk;
         })
-        .catch((err) => {
-          console.error(
-            "Failed to save embeddings to DB",
-            err?.response?.errors
-          );
-          throw new Error("Failed to save embeddings to DB");
-        });
+        .map((embeddedChunk) => ({
+          bookmarkId: savedBookmark!.id,
+          chunkIndex: embeddedChunk.index,
+          chunk: embeddedChunk.chunk,
+          embedding: embeddedChunk.embedding,
+        }));
+      await gqlClient.request(SaveBookmarkEmbeddingsDocument, {
+        bookmarkId: savedBookmark!.id,
+        inputs: embeddingToInsert,
+      });
 
       console.log("🚀 | Fetching bookmark w/ embeddings from DB...");
       let bookmarkWithEmbeddings = await gqlClient.request(

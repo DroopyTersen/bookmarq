@@ -95,6 +95,7 @@ export class JobRunner<TJobData = any> {
       } satisfies JobEventData<TJobData>);
     } catch (error: unknown) {
       console.error("🚀 | _runJob | error:", jobId, error);
+      console.error("🚀 | _runJob | error:", jobId, JSON.stringify(error));
       this.emitter.emit(jobId, {
         type: JOB_EVENTS.JOB_FAILED,
         data: context.data,
