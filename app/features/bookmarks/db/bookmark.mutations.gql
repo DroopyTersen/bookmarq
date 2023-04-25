@@ -36,13 +36,13 @@ mutation DeleteBookmark($id: String!) {
 
 mutation SaveBookmarkEmbeddings(
   $bookmarkId: String!
-  $inputs: [BookmarkEmbeddingsInsertInput!]!
+  $inputs: BookmarkEmbeddingsInsertInput!
 ) {
   deleteBookmarkEmbeddings(where: { bookmarkId: { _eq: $bookmarkId } }) {
     affectedRows
   }
   insertBookmarkEmbeddings(
-    objects: $inputs
+    objects: [$inputs]
     onConflict: {
       constraint: bookmark_embeddings_chunk_key
       updateColumns: [bookmarkId, embedding]

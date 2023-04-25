@@ -2,8 +2,47 @@ import { Readability } from "@mozilla/readability";
 import { HTMLDocument } from "linkedom/types/html/document";
 
 import prettier from "prettier";
+import { convertHtmlToText } from "./convertHtmlToText.server";
 import { ExtractedArticleData } from "./extract-link.types";
 import { extractImageDimensions } from "./extractImageDimensions.server";
+
+export const extractArticleMetadata = async (url: string) => {
+  const { extract } = await import("@extractus/article-extractor");
+  const extractedArticle = await extract(url);
+  let result: ExtractedArticleData = {
+    ...extractedArticle,
+    html: extractedArticle.content || "",
+    text: convertHtmlToText(extractedArticle.content || ""),
+    url,
+  };
+  if (result.image) {
+    try {
+      result = {
+        ...result,
+        imageDimensions: await extractImageDimensions(result.image),
+      };
+    } catch (err) {
+      console.error("Unable to fetch image dimensions", err);
+    }
+  }
+  return result;
+};
+
+export const parseMainArticle = async (html: string, url: string) => {
+  let DOMParser = await import("linkedom").then((m) => m.DOMParser);
+  const doc = new DOMParser().parseFromString(html, "text/html");
+  const base = doc.createElement("base");
+  base.setAttribute("href", url);
+  doc.head.appendChild(base as any);
+  html = cleanUpCodeBlocks(doc);
+  const reader = new Readability(doc as any, {
+    keepClasses: true,
+    debug: true,
+  });
+  const readerResult = reader.parse();
+  return readerResult;
+};
+
 export const extractArticle = async (
   html: string,
   url: string,
@@ -135,40 +174,3 @@ const tryGetLanguage = (codeElem: HTMLElement) => {
 
   return language;
 };
-
-type KeysOfType<TItem, TProp> = {
-  [Key in keyof TItem]: TItem[Key] extends TProp ? Key : never;
-}[keyof TItem];
-
-interface ColumnMapping<TItem> {
-  key: KeysOfType<TItem, string | number>;
-  label: string;
-}
-
-function createCsv<
-  TColumns extends {
-    key: keyof TItem;
-    label: string;
-  }[],
-  TItem extends Record<string, string | number>
->(columns: TColumns, items: TItem[]) {
-  return items
-    .map((item) => {
-      return columns.map((column) => (item as any)[column.key]).join(",");
-    })
-    .join("\n");
-}
-
-interface BlogPost {
-  title: string;
-  author: string;
-}
-
-const columns: ColumnMapping<BlogPost>[] = [
-  {
-    key: "title",
-    label: "Title",
-  },
-];
-
-let csv = createCsv(columns, [{ author: "John", title: "Hello" }]);

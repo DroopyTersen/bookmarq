@@ -5,7 +5,7 @@ import { z } from "zod";
 import { zfd } from "zod-form-data";
 import { requireAuthenticatedAction } from "~/features/auth/auth.remix.server";
 import { createBookmarksApi } from "~/features/bookmarks/bookmarks.api.server";
-import { processUrl } from "~/features/bookmarks/processUrl";
+import { getNewBookmarkJobRunner } from "~/features/bookmarks/newBookmarkJob.server";
 import { getCache } from "~/features/cache/getCache.server";
 import { MainContentCentered } from "~/features/layout/AppLayout";
 import { InputField } from "~/toolkit/components/forms";
@@ -72,26 +72,140 @@ const NewBookmarkInputSchema = zfd.formData({
   url: z.string().url("Please enter a valid URL"),
 });
 
+// export const action = async ({ request, params }: ActionArgs) => {
+//   let { formData, gqlClient } = await requireAuthenticatedAction(request);
+//   try {
+//     let cache = getCache(request);
+//     let collectionId = params.collectionId || "";
+//     let formInput = NewBookmarkInputSchema.parse(formData);
+//     let bookmarkInput = await processUrl(
+//       formInput.url,
+//       { ...formInput, collectionId },
+//       undefined
+//     );
+//     let bookmark = await createBookmarksApi(
+//       gqlClient,
+//       collectionId
+//     ).saveBookmark(bookmarkInput);
+//     if (!bookmark) {
+//       throw new Error("Bookmark not created");
+//     }
+//     return redirect(`/${collectionId}/${bookmark.id}`);
+//   } catch (err: unknown) {
+//     return tryParseActionError(err, formData);
+//   }
+// };
+
 export const action = async ({ request, params }: ActionArgs) => {
   let { formData, gqlClient } = await requireAuthenticatedAction(request);
   try {
     let cache = getCache(request);
     let collectionId = params.collectionId || "";
     let formInput = NewBookmarkInputSchema.parse(formData);
-    let bookmarkInput = await processUrl(
-      formInput.url,
-      { ...formInput, collectionId },
-      undefined
-    );
-    let bookmark = await createBookmarksApi(
+    let jobRunner = getNewBookmarkJobRunner();
+    let insertedBookmark = await createBookmarksApi(
       gqlClient,
       collectionId
-    ).saveBookmark(bookmarkInput);
-    if (!bookmark) {
-      throw new Error("Bookmark not created");
+    ).insertBookmarkPlaceholder(formInput.url);
+    if (!insertedBookmark?.id) {
+      throw new Error("Inserted bookmark is missing an ID");
     }
-    return redirect(`/${collectionId}/${bookmark.id}`);
+    jobRunner.startJob(
+      {
+        input: {
+          collectionId,
+          url: formInput.url,
+          cache,
+          gqlClient,
+        },
+      },
+      insertedBookmark.id
+    );
+    jobRunner.subscribe(insertedBookmark.id, (event) => {
+      // console.log(
+      //   "NewBookmarkJob event",
+      //   insertedBookmark?.id,
+      //   JSON.stringify(event, null, 2)
+      // );
+    });
+
+    // return eventStream(request.signal, (send) => {
+
+    //   let unsubscribe = jobRunner.subscribe(jobId, (event) => {
+    //     send({
+    //       data: JSON.stringify(event.data),
+    //     });
+    //   });
+
+    //   return () => {
+    //     unsubscribe();
+    //   };
+    // });
+    return redirect(`/${collectionId}/${insertedBookmark.id}`);
   } catch (err: unknown) {
     return tryParseActionError(err, formData);
   }
 };
+
+interface SendFunctionArgs {
+  /**
+   * @default "message"
+   */
+  event?: string;
+  data: string;
+}
+
+interface SendFunction {
+  (args: SendFunctionArgs): void;
+}
+
+interface CleanupFunction {
+  (): void;
+}
+
+interface InitFunction {
+  (send: SendFunction): CleanupFunction;
+}
+
+/**
+ * A response holper to use Server Sent Events server-side
+ * @param signal The AbortSignal used to close the stream
+ * @param init The function that will be called to initialize the stream, here you can subscribe to your events
+ * @returns A Response object that can be returned from a loader
+ */
+export function eventStream(signal: AbortSignal, init: InitFunction) {
+  let stream = new ReadableStream({
+    start(controller) {
+      let encoder = new TextEncoder();
+
+      function send({ event = "message", data }: SendFunctionArgs) {
+        controller.enqueue(encoder.encode(`event: ${event}\n`));
+        controller.enqueue(encoder.encode(`data: ${data}\n\n`));
+      }
+
+      let cleanup = init(send);
+
+      let closed = false;
+
+      function close() {
+        if (closed) return;
+        cleanup();
+        closed = true;
+        signal.removeEventListener("abort", close);
+        controller.close();
+      }
+
+      signal.addEventListener("abort", close);
+
+      if (signal.aborted) return close();
+    },
+  });
+
+  return new Response(stream, {
+    headers: {
+      "Content-Type": "text/event-stream",
+      "Cache-Control": "no-cache",
+      Connection: "keep-alive",
+    },
+  });
+}

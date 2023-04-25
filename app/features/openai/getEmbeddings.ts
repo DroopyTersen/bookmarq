@@ -7,7 +7,6 @@ export const getBookmarkEmbeddings = async (
 ): Promise<EmbeddedChunk[]> => {
   if (!text) return [];
   let chunks = (await createChunks(text)).map((d) => {
-    console.log("Chunk metadata", d.metadata);
     return d.pageContent;
   });
   let result = await fetchOpenAIEmbeddings(chunks);

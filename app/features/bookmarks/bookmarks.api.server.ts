@@ -1,4 +1,7 @@
-import { GetBookmarkByIdWithEmbeddingDocument } from "~/.gql/graphql.types";
+import {
+  GetBookmarkByIdWithEmbeddingDocument,
+  SaveBookmarkEmbeddingsDocument,
+} from "~/.gql/graphql.types";
 import {
   getBookmarkEmbeddings,
   getQueryEmbedding,
@@ -7,7 +10,6 @@ import { GqlClient } from "~/toolkit/http/createGqlClient";
 import { BookmarkSearchCriteria } from "./bookmarks.schema";
 import { BookmarkFullInput, createBookmarksDBService } from "./db/bookmarks.db";
 import { createSearchService } from "./typesense/createSearchService";
-import { importBookmarkToTypesense } from "./typesense/importBookmarkToTypesense";
 
 export const createBookmarksApi = (
   gqlClient: GqlClient,
@@ -52,6 +54,16 @@ export const createBookmarksApi = (
         },
       };
     },
+    insertBookmarkPlaceholder: async (url: string) => {
+      let insertedBookmark = await dbService.saveBookmark({
+        url,
+        collectionId,
+      });
+      return insertedBookmark;
+    },
+    /**
+     * 1) saves bookmark to DB, 2) gets embeddings from OpenAI, 3) saves embeddings to DB 4) Saves bookmark and embeddings to Typesense
+     */
     saveBookmark: async (input: BookmarkFullInput) => {
       console.log("🚀 | Saving bookmark and getting embeddings...");
       let [savedBookmark, embeddedChunks] = await Promise.all([
@@ -60,11 +72,36 @@ export const createBookmarksApi = (
         // Get embeddings
         getBookmarkEmbeddings(input.text || ""),
       ]);
-      if (!savedBookmark) {
+      if (!savedBookmark?.id) {
         throw new Error("Failed to save bookmark");
       }
-      console.log("🚀 | Fetching bookmark w/ embeddings from DB...");
+      embeddedChunks.forEach((embeddedChunk) => {
+        console.log("🚀 | embeddedChunks.forEach | embeddedChunk:", {
+          chunkIndex: embeddedChunk.index,
+          chunk: embeddedChunk.chunk?.slice(0, 100),
+          embeddingLenght: embeddedChunk.embedding?.length,
+        });
+      });
+      let embeddingToInsert = embeddedChunks.map((embeddedChunk) => ({
+        bookmarkId: savedBookmark!.id,
+        chunkIndex: embeddedChunk.index,
+        chunk: embeddedChunk.chunk,
+        embedding: embeddedChunk.embedding,
+      }))?.[0];
+      await gqlClient
+        .request(SaveBookmarkEmbeddingsDocument, {
+          bookmarkId: savedBookmark.id,
+          inputs: embeddingToInsert,
+        })
+        .catch((err) => {
+          console.error(
+            "Failed to save embeddings to DB",
+            err?.response?.errors
+          );
+          throw new Error("Failed to save embeddings to DB");
+        });
 
+      console.log("🚀 | Fetching bookmark w/ embeddings from DB...");
       let bookmarkWithEmbeddings = await gqlClient.request(
         GetBookmarkByIdWithEmbeddingDocument,
         {
@@ -73,7 +110,9 @@ export const createBookmarksApi = (
       );
       if (bookmarkWithEmbeddings?.bookmark) {
         console.log("🚀 | Saving to typesense...");
-        await importBookmarkToTypesense(bookmarkWithEmbeddings.bookmark);
+        await searchService.importBookmarkWithEmbeddings(
+          bookmarkWithEmbeddings.bookmark
+        );
       }
       return savedBookmark;
     },
