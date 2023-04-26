@@ -40,7 +40,6 @@ let newBookmarkJob = new JobDefinition<NewBookmarkJobData>("url-ingestion");
 newBookmarkJob.registerStep("Fetching mimeType", async ({ data }, emit) => {
   let input = NewBookmarkInputSchema.parse(data.input);
   data.mimeType = await extractMimeType(input.url);
-  console.log("mimeType", data.mimeType);
 });
 
 newBookmarkJob.registerStep("Extracting Metadata", async ({ data }, emit) => {
@@ -114,10 +113,13 @@ newBookmarkJob.registerStep(
   }
 );
 
-let _newBookmarkJobRunner: JobRunner<NewBookmarkJobData> | null = null;
+console.log("Creating _newBookmarkJobRunner");
+export let newBookmarkJobRunner = new JobRunner(newBookmarkJob);
+
 export const getNewBookmarkJobRunner = () => {
-  if (!_newBookmarkJobRunner) {
-    _newBookmarkJobRunner = new JobRunner(newBookmarkJob);
+  if (!newBookmarkJobRunner) {
+    console.log("Newing up newBookmarkJobRunner");
+    newBookmarkJobRunner = new JobRunner(newBookmarkJob);
   }
-  return _newBookmarkJobRunner;
+  return newBookmarkJobRunner;
 };

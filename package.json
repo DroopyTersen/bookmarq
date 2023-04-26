@@ -19,7 +19,7 @@
     "format": "prettier --write \"app/**/*.{js,jsx,ts,tsx}\""
   },
   "dependencies": {
-    "@dqbd/tiktoken": "^1.0.2",
+    "@dqbd/tiktoken": "^1.0.6",
     "@extractus/article-extractor": "^7.2.9",
     "@extractus/oembed-extractor": "^3.1.8",
     "@radix-ui/react-dialog": "^1.0.2",

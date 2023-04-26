@@ -1,22 +1,20 @@
-import hljs from "highlight.js";
 import { useEffect, useRef, useState } from "react";
 import { Img } from "~/toolkit/components/image/Img";
 import { BookmarkDetails } from "../../bookmarks.schema";
 
-export function ArticleDisplay({ bookmark }: { bookmark: BookmarkDetails }) {
+export function ArticleDisplay({ bookmark }: { bookmark?: BookmarkDetails }) {
   if (!bookmark?.articleData) return null;
   let articleRef = useRef<HTMLDivElement | null>(null);
   let [tab, setTab] = useState<"text" | "html">("html");
   useEffect(() => {
     if (!articleRef.current || !bookmark?.articleData?.html) return;
     articleRef.current.innerHTML = bookmark?.articleData?.html || "";
-    hljs.highlightAll();
+    // hljs.highlightAll();
     document.querySelectorAll("pre").forEach((pre: HTMLPreElement) => {
       // pre.contentEditable = "true";
       // pre.spellcheck = false;
     });
   }, [bookmark?.articleData?.html]);
-  console.log({ article: bookmark?.articleData });
   return (
     <>
       {bookmark?.image && (

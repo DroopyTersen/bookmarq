@@ -30,7 +30,6 @@ export function useDebouncedUpdateEffect<T>(
     effectRef.current = effectFn;
   }, [effectFn]);
   useUpdateEffect(() => {
-    console.log("update effect", updatedValue);
     if (effectRef.current) {
       return effectRef.current(updatedValue);
     }

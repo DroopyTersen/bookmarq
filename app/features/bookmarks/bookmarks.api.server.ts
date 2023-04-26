@@ -76,13 +76,13 @@ export const createBookmarksApi = (
       if (!savedBookmark?.id) {
         throw new Error("Failed to save bookmark");
       }
-      embeddedChunks.forEach((embeddedChunk) => {
-        console.log("🚀 | embeddedChunks.forEach | embeddedChunk:", {
-          chunkIndex: embeddedChunk.index,
-          chunk: embeddedChunk.chunk?.slice(0, 100),
-          embeddingLenght: embeddedChunk.embedding?.length,
-        });
-      });
+      // embeddedChunks.forEach((embeddedChunk) => {
+      //   console.log("🚀 | embeddedChunks.forEach | embeddedChunk:", {
+      //     chunkIndex: embeddedChunk.index,
+      //     chunk: embeddedChunk.chunk?.slice(0, 100),
+      //     embeddingLenght: embeddedChunk.embedding?.length,
+      //   });
+      // });
       let embeddingToInsert = embeddedChunks
         .filter((ec) => {
           return ec.embedding?.length && ec.chunk;

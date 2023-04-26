@@ -1,5 +1,4 @@
 import { json, LinksFunction, LoaderArgs, MetaFunction } from "@remix-run/node";
-
 import {
   Links,
   LiveReload,
@@ -13,6 +12,7 @@ import hightlightJSStyles from "highlight.js/styles/stackoverflow-dark.css";
 import globalStyles from "../public/css/global.css";
 import { createUserGqlClient } from "./common/hasura.server";
 import { authSession } from "./features/auth/authSession.server";
+import { newBookmarkJobRunner } from "./features/bookmarks/newBookmarkJob.server";
 import { AppLayout } from "./features/layout/AppLayout";
 import { getUserById } from "./features/users/users.data.server";
 import tailwindStyles from "./styles/tailwind.css";
@@ -30,6 +30,7 @@ export const meta: MetaFunction = () => ({
 });
 
 export const loader = async ({ request }: LoaderArgs) => {
+  console.log(newBookmarkJobRunner);
   let userSession = await authSession.get(request);
   let user;
   if (userSession?.userId && userSession?.hasuraToken) {

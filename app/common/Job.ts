@@ -24,7 +24,7 @@ export class JobDefinition<TJobData = any> {
     this.steps.push({ name: stepName, fn });
   }
 }
-
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 export const JOB_EVENTS = {
   JOB_COMPLETE: "JOB_COMPLETE",
   JOB_FAILED: "JOB_FAILED",
@@ -51,8 +51,12 @@ export class JobRunner<TJobData = any> {
     this.jobDefintion = job;
     this.activeJobs = new Map();
   }
-  public startJob = (initialJobData: TJobData, jobId = generateUUID()) => {
+  public startJob = async (
+    initialJobData: TJobData,
+    jobId = generateUUID()
+  ) => {
     this._runJob(initialJobData, jobId);
+    await wait(100);
     return jobId;
   };
   private _runJob = async (jobData: TJobData, jobId: string) => {
@@ -61,7 +65,11 @@ export class JobRunner<TJobData = any> {
       throw new Error("Job is already active: " + jobId);
     }
     this.activeJobs.set(jobId, jobData);
-
+    console.log(
+      "ADDED A JOB",
+      this.activeJobs.has(jobId),
+      Array.from(this.activeJobs.keys())
+    );
     let context: JobContext<TJobData> = {
       jobId,
       data: jobData,

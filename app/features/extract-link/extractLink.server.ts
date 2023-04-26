@@ -27,7 +27,6 @@ export async function extractLink(url: string, cache?: ICache) {
   // then don't bother trying to extract more detail
   if (!mimeType || mimeType.startsWith("text/html")) {
     let html = await extractHtml(url);
-    console.log("🚀 | extractLink | html:", html);
     if (!html) {
       console.error("Missing html");
       return extractedLinkData;

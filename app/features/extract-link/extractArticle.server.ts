@@ -34,12 +34,23 @@ export const parseMainArticle = async (html: string, url: string) => {
   const base = doc.createElement("base");
   base.setAttribute("href", url);
   doc.head.appendChild(base as any);
-  html = cleanUpCodeBlocks(doc);
-  const reader = new Readability(doc as any, {
-    keepClasses: true,
-    debug: true,
-  });
+  let cleanedCodeHtml = cleanUpCodeBlocks(doc);
+  const reader = new Readability(
+    new DOMParser().parseFromString(cleanedCodeHtml, "text/html") as any,
+    {
+      keepClasses: true,
+      debug: false,
+    }
+  );
+
   const readerResult = reader.parse();
+  if (readerResult?.textContent) {
+    // remove extra empty lines
+    readerResult.textContent = readerResult.textContent.replace(
+      /\n\s*\n/g,
+      "\n\n"
+    );
+  }
   return readerResult;
 };
 
@@ -48,7 +59,6 @@ export const extractArticle = async (
   url: string,
   { provideText = true }: { provideText: boolean }
 ): Promise<ExtractedArticleData | null> => {
-  console.log("🚀 | url1:", url);
   const { extractFromHtml } = await import("@extractus/article-extractor");
   try {
     let DOMParser = await import("linkedom").then((m) => m.DOMParser);
@@ -57,7 +67,6 @@ export const extractArticle = async (
     base.setAttribute("href", url);
     doc.head.appendChild(base as any);
     html = cleanUpCodeBlocks(doc);
-    console.log("🚀 | html:", html);
     const reader = new Readability(doc as any, {
       keepClasses: true,
       debug: true,
@@ -113,7 +122,7 @@ const cleanUpCodeBlocks = (doc: HTMLDocument) => {
   // loop through all the code elements
   for (const codeElement of codeElements) {
     let language = tryGetLanguage(codeElement as HTMLElement);
-    console.log("🚀 | cleanUpCodeBlocks | language:", language);
+
     // get the text content of the code element
     let codeStr = codeElement?.innerHTML || "";
 
@@ -130,13 +139,13 @@ const cleanUpCodeBlocks = (doc: HTMLDocument) => {
       try {
         codeElement.classList.add("language-" + language);
         codeElement.parentElement?.classList.add("language-" + language);
-        console.log("🚀 | cleanUpCodeBlocks | class:", codeElement.className);
+        // console.log("🚀 | cleanUpCodeBlocks | class:", codeElement.className);
         const formattedCode = prettier.format(codeStr, {
           filepath: "codefile." + language,
         });
         codeElement.textContent = formattedCode;
       } catch (err) {
-        console.error("Unable to format code", err);
+        // console.error("Unable to format code", err);
       }
     }
     if (codeElement.tagName === "PRE") {
@@ -158,7 +167,7 @@ const tryGetLanguage = (codeElem: HTMLElement) => {
     ...codeElem.classList,
     ...(codeElem.parentElement?.classList || []),
   ];
-  console.log("🚀 | tryGetLanguage | classList:", classList);
+  // console.log("🚀 | tryGetLanguage | classList:", classList);
   let language = "";
   // Loop through all the classes and see if any of them start with language-* or lang-*
   for (let i = 0; i < classList.length; i++) {
