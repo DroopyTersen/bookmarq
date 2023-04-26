@@ -10,6 +10,7 @@ import {
 import { extractEmbed } from "../extract-link/extractEmbed.server";
 import { extractHtml } from "../extract-link/extractHtml";
 import { extractMimeType } from "../extract-link/extractMimeType";
+import { summarizeText } from "../openai/getCompletion";
 import { createBookmarksApi } from "./bookmarks.api.server";
 const NewBookmarkInputSchema = z.object({
   id: z.string().min(1),
@@ -27,6 +28,7 @@ export interface NewBookmarkJobData {
   mimeType?: string;
   bookmark?: BookmarksInsertInput;
   fullHtml?: string;
+  summary?: string;
 }
 
 let newBookmarkJob = new JobDefinition<NewBookmarkJobData>("url-ingestion");
@@ -101,7 +103,7 @@ newBookmarkJob.registerStep(
 );
 
 newBookmarkJob.registerStep(
-  "Save Bookmark (with Embeddings)",
+  "Summarizing & Saving Bookmark (with Embeddings)",
   async ({ data }, emit) => {
     let gqlClient = data?.input?.gqlClient;
     if (!gqlClient) {
@@ -128,8 +130,20 @@ newBookmarkJob.registerStep(
       articleData: data?.bookmark?.articleData,
       embedData: data?.bookmark?.embedData,
     };
-    let newBookmark = await bookmarkApi.saveBookmark(bookmarkInput);
+    let [newBookmark, summary] = await Promise.all([
+      bookmarkApi.saveBookmark(bookmarkInput),
+      summarizeText(bookmarkInput.text!, (deltaContent: string) => {
+        data.summary = (data?.summary || "") + deltaContent;
+        emit("SUMMARY_PROGRESS");
+      }),
+    ]);
+    // let newBookmark = await bookmarkApi.saveBookmark(bookmarkInput);
     data.bookmark.id = newBookmark.id;
+
+    console.log("🚀 | summary:", summary);
+    if (summary) {
+      await bookmarkApi.saveBookmarkSummary(newBookmark.id, summary + "");
+    }
     console.log("DONE SAVING BOOKMARK", newBookmark.id);
   }
 );

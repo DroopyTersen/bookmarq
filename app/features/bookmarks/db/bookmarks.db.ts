@@ -1,4 +1,5 @@
 import {
+  BookmarksSetInput,
   DeleteBookmarkDocument,
   GetBookmarkByIdDocument,
   GetBookmarkByIdWithEmbeddingDocument,
@@ -7,6 +8,7 @@ import {
   GetBookmarksCountByCollectionDocument,
   SaveBookmarkDocument,
   SaveBookmarkMutationVariables,
+  UpdateBookmarkDocument,
 } from "~/.gql/graphql.types";
 import { GqlClient } from "~/toolkit/http/createGqlClient";
 
@@ -38,6 +40,12 @@ export const createBookmarksDBService = (gqlClient: GqlClient) => ({
       console.error("saveBookmark err", err);
       throw err;
     }
+  },
+  updateBookmark: async (bookmarkId: string, input: BookmarksSetInput) => {
+    let data = await gqlClient.request(UpdateBookmarkDocument, {
+      id: bookmarkId,
+      input,
+    });
   },
   getBookmarkById: async (bookmarkId: string) => {
     let data = await gqlClient.request(GetBookmarkByIdDocument, {

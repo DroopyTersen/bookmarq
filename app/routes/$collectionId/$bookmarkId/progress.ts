@@ -20,7 +20,7 @@ export const loader = ({ request, params }: LoaderArgs) => {
           bookmark: {
             title: event?.data?.bookmark?.title || "",
             image: event?.data?.bookmark?.image || "",
-            summary: "",
+            summary: event.data.summary || "",
           },
           type: event.type,
           step: event?.step || "",

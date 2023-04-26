@@ -1,6 +1,5 @@
 import hljs from "highlight.js";
 import { useEffect, useRef, useState } from "react";
-import { Img } from "~/toolkit/components/image/Img";
 import { BookmarkDetails } from "../../bookmarks.schema";
 
 export function ArticleDisplay({ bookmark }: { bookmark?: BookmarkDetails }) {
@@ -21,22 +20,6 @@ export function ArticleDisplay({ bookmark }: { bookmark?: BookmarkDetails }) {
   }, [bookmark?.html]);
   return (
     <>
-      {bookmark?.image && (
-        <div className="flex justify-center mb-4">
-          <a
-            href={bookmark?.url}
-            target="_blank"
-            className="max-w-full link link-hover"
-          >
-            <Img
-              src={bookmark?.image}
-              initial={bookmark?.image}
-              width={bookmark?.articleData?.imageDimensions?.width}
-              className={`rounded-lg max-w-full`}
-            />
-          </a>
-        </div>
-      )}
       <div className="flex gap-2">
         {bookmark?.articleData?.author && (
           <span className="font-semibold">{bookmark?.articleData?.author}</span>

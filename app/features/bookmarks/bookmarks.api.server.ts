@@ -61,6 +61,12 @@ export const createBookmarksApi = (
       });
       return insertedBookmark;
     },
+    saveBookmarkSummary: async (bookmarkId: string, summary: string) => {
+      let updatedBookmark = await dbService.updateBookmark(bookmarkId, {
+        summary,
+      });
+      return updatedBookmark;
+    },
     /**
      * 1) saves bookmark to DB, 2) gets embeddings from OpenAI, 3) saves embeddings to DB 4) Saves bookmark and embeddings to Typesense
      */

@@ -13,6 +13,8 @@ import { ArticleDisplay } from "~/features/bookmarks/components/articles/Article
 import { EmbedDisplay } from "~/features/bookmarks/components/embeds/EmbedDisplay";
 import { newBookmarkJobRunner } from "~/features/bookmarks/newBookmarkJob.server";
 import { AppErrorBoundary } from "~/toolkit/components/errors/AppErrorBoundary";
+import { Img } from "~/toolkit/components/image/Img";
+import { LoadingLogo } from "~/toolkit/components/loaders/LoadingLogo";
 import { ConfirmationButton } from "~/toolkit/components/modal/ConfirmationButton";
 import { useSearchParam } from "~/toolkit/remix/useSearchParam";
 import { ProgressJobData } from "./progress";
@@ -61,7 +63,7 @@ export default function () {
       {!isRunningJob ? (
         <BookmarkDisplay bookmark={fastBookmark as any} />
       ) : (
-        <Suspense fallback={<pre>{JSON.stringify(jobData, null, 2)}</pre>}>
+        <Suspense fallback={<ProgressDisplay progressData={jobData} />}>
           <Await
             resolve={deferredBookmark}
             errorElement={<p>Error loading img!</p>}
@@ -95,6 +97,43 @@ export const action = async ({ request, params }: ActionArgs) => {
 export const ErrorBoundary = AppErrorBoundary;
 export const CatchBoundary = AppErrorBoundary;
 
+function ProgressDisplay({
+  progressData,
+}: {
+  progressData: ProgressJobData | null;
+}) {
+  return (
+    <>
+      <div
+        className={`absolute inset-0 flex flex-col items-center transition-opacity`}
+      >
+        <div
+          className={"absolute inset-0 z-50 bg-base-300"}
+          style={{ opacity: 0.8 }}
+        ></div>
+        <div className="z-50">
+          <div className="flex flex-col items-center mt-4">
+            <LoadingLogo />
+            <div className="mt-2 font-bold">
+              {progressData?.step || "Starting Import..."}
+            </div>
+          </div>
+          {progressData?.bookmark?.summary && (
+            <div className="p-6 mb-4 rounded-lg bg-base-300 ">
+              <h3 className="mb-2 text-lg font-bold">TLDR</h3>
+              <p className="whitespace-pre-wrap">
+                {progressData?.bookmark?.summary}
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+      {progressData?.bookmark?.title && (
+        <BookmarkDisplay bookmark={progressData?.bookmark as any} />
+      )}
+    </>
+  );
+}
 function BookmarkDisplay({ bookmark }: { bookmark: BookmarkDetails }) {
   let [returnTo] = useSearchParam("returnTo");
   let backUrl = returnTo || "..";
@@ -146,6 +185,28 @@ function BookmarkDisplay({ bookmark }: { bookmark: BookmarkDetails }) {
             </a>
           </div>
         </div>
+        {bookmark?.image && (
+          <div className="flex justify-center mb-4">
+            <a
+              href={bookmark?.url}
+              target="_blank"
+              className="max-w-full link link-hover"
+            >
+              <Img
+                src={bookmark?.image}
+                initial={bookmark?.image}
+                width={bookmark?.articleData?.imageDimensions?.width}
+                className={`rounded-lg max-w-full`}
+              />
+            </a>
+          </div>
+        )}
+        {bookmark?.summary && (
+          <div className="p-6 mb-4 rounded-lg bg-base-300 ">
+            <h3 className="mb-2 text-lg font-bold">TLDR</h3>
+            <p className="whitespace-pre-wrap">{bookmark?.summary}</p>
+          </div>
+        )}
         <ArticleDisplay bookmark={bookmark as any} />
 
         <EmbedDisplay bookmark={bookmark as any} />

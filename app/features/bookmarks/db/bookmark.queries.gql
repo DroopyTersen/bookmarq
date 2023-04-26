@@ -6,6 +6,7 @@ fragment Bookmark on Bookmarks {
   createdAt
   collectionId
   url
+  summary
 }
 
 fragment BookmarkDetails on Bookmarks {
