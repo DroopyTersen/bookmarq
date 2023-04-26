@@ -5,8 +5,8 @@ export const createChunks = async (text: string) => {
     (m) => m.TokenTextSplitter
   );
   const splitter = new TokenTextSplitter({
-    chunkSize: 1200,
-    chunkOverlap: 200,
+    chunkSize: 1000,
+    chunkOverlap: 160,
   });
   const chunks = await splitter.createDocuments([text]);
   return chunks;

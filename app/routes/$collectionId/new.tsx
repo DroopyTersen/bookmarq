@@ -113,6 +113,7 @@ export const action = async ({ request, params }: ActionArgs) => {
     await newBookmarkJobRunner.startJob(
       {
         input: {
+          id: insertedBookmark?.id,
           collectionId,
           url: formInput.url,
           cache,

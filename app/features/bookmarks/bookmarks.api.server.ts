@@ -66,16 +66,27 @@ export const createBookmarksApi = (
      */
     saveBookmark: async (input: BookmarkFullInput) => {
       console.log("🚀 | Saving bookmark and getting embeddings...");
-      let [savedBookmark, embeddedChunks] = await Promise.all([
-        // save bookmark to DB
-        dbService.saveBookmark(input),
-        // Get embeddings
-        getBookmarkEmbeddings(input.text || ""),
-      ]);
+      // if (input?.id) {
+      //   console.log("Deleting", input?.id, "from DB...");
+      //   await createBookmarksDBService(gqlClient).deleteBookmark(input?.id);
+      // }
+      let savedBookmark = await createBookmarksDBService(
+        gqlClient
+      ).saveBookmark(input);
+      console.log("Savedq bookmark to DB.");
+      let embeddedChunks = await getBookmarkEmbeddings(input.text || "");
+      // let [savedBookmark, embeddedChunks] = await Promise.all([
+      //   // save bookmark to DB
+      //   // Get embeddings
+      //   Promise.resolve([] as EmbeddedChunk[]),
+      //   // getBookmarkEmbeddings(input.text || ""),
+      // ]);
 
       if (!savedBookmark?.id) {
         throw new Error("Failed to save bookmark");
       }
+
+      // console.log("🚀 | Saving embeddings to DB...");
       // embeddedChunks.forEach((embeddedChunk) => {
       //   console.log("🚀 | embeddedChunks.forEach | embeddedChunk:", {
       //     chunkIndex: embeddedChunk.index,
@@ -93,6 +104,7 @@ export const createBookmarksApi = (
           chunk: embeddedChunk.chunk,
           embedding: embeddedChunk.embedding,
         }));
+
       await gqlClient.request(SaveBookmarkEmbeddingsDocument, {
         bookmarkId: savedBookmark!.id,
         inputs: embeddingToInsert,

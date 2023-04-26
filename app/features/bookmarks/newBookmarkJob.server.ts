@@ -4,10 +4,6 @@ import { JobDefinition, JobRunner } from "~/common/Job";
 import { GqlClient } from "~/toolkit/http/createGqlClient";
 import { ICache } from "../cache/ICache";
 import {
-  ExtractedArticleData,
-  ExtractedEmbedData,
-} from "../extract-link/extract-link.types";
-import {
   extractArticleMetadata,
   parseMainArticle,
 } from "../extract-link/extractArticle.server";
@@ -16,6 +12,7 @@ import { extractHtml } from "../extract-link/extractHtml";
 import { extractMimeType } from "../extract-link/extractMimeType";
 import { createBookmarksApi } from "./bookmarks.api.server";
 const NewBookmarkInputSchema = z.object({
+  id: z.string().min(1),
   url: z.string({ description: "URL is required" }).url("Invalid URL"),
   collectionId: z.string().min(1),
 });
@@ -28,17 +25,20 @@ export type NewBookmarkJobInput = z.infer<typeof NewBookmarkInputSchema> & {
 export interface NewBookmarkJobData {
   input: NewBookmarkJobInput;
   mimeType?: string;
-  html?: string;
-  text?: string;
-  article?: ExtractedArticleData | null;
-  embed?: ExtractedEmbedData | null;
   bookmark?: BookmarksInsertInput;
+  fullHtml?: string;
 }
 
 let newBookmarkJob = new JobDefinition<NewBookmarkJobData>("url-ingestion");
 
 newBookmarkJob.registerStep("Fetching mimeType", async ({ data }, emit) => {
   let input = NewBookmarkInputSchema.parse(data.input);
+  data.bookmark = {
+    id: data?.input?.id,
+    ...data?.bookmark,
+    collectionId: input.collectionId,
+    url: input.url,
+  };
   data.mimeType = await extractMimeType(input.url);
 });
 
@@ -48,37 +48,54 @@ newBookmarkJob.registerStep("Extracting Metadata", async ({ data }, emit) => {
     return;
   }
   let input = NewBookmarkInputSchema.parse(data.input);
-  data.article = await extractArticleMetadata(input.url);
-  if (!data.article) {
-    data.embed = await extractEmbed(input.url);
+  let article = await extractArticleMetadata(input.url);
+  let embed = null;
+  if (!article) {
+    embed = await extractEmbed(input.url);
   }
-
-  data.html = data.article?.html || data.embed?.html || "";
-  data.text = data.article?.text || data.embed?.text || "";
+  data.bookmark = {
+    title: article?.title || embed?.title || "",
+    image: article?.image || embed?.thumbnail_url,
+    html: article?.html || embed?.html || "",
+    text: article?.text || embed?.text || "",
+    description: article?.description || embed?.text,
+  };
+  if (article) {
+    data.bookmark.articleData = {
+      ...article,
+      html: "",
+      text: "",
+    };
+  } else if (embed) {
+    data.bookmark.embedData = embed;
+  }
 });
 
 newBookmarkJob.registerStep("Fetching Full HTML", async ({ data }, emit) => {
   // If it's not an article, we probably don't need the full HTML
-  if (!data.article) {
+  if (!data?.mimeType?.startsWith("text/html") && !data?.bookmark?.embedData) {
     console.log("Skipping HTML extraction because it's not an article");
     return;
   }
   let input = NewBookmarkInputSchema.parse(data.input);
-  data.html = await extractHtml(input.url);
+  data.fullHtml = await extractHtml(input.url);
 });
 
 newBookmarkJob.registerStep(
   "Extracting Main Content",
   async ({ data }, emit) => {
     // If it's not an article, we probably don't need the full HTML
-    if (!data.article || !data?.html) {
+    if (!data.fullHtml) {
       return;
     }
     let input = NewBookmarkInputSchema.parse(data.input);
-    let mainArticle = await parseMainArticle(data.html, input.url);
-    if (mainArticle?.content) {
-      data.html = mainArticle.content;
-      data.text = mainArticle.textContent;
+    let mainArticle = await parseMainArticle(data.fullHtml, input.url);
+    if (mainArticle?.content && data?.bookmark) {
+      data.bookmark.html = mainArticle?.content || data?.bookmark?.html;
+      data.bookmark.text = mainArticle?.textContent || data?.bookmark?.text;
+      if (data?.bookmark?.articleData?.html) {
+        data.bookmark.articleData.html = "";
+      }
     }
   }
 );
@@ -90,26 +107,30 @@ newBookmarkJob.registerStep(
     if (!gqlClient) {
       throw new Error("GqlClient is required");
     }
-    let bookmarkInput: BookmarksInsertInput = {
-      collectionId: data.input?.collectionId,
-      url: data.input?.url,
-      title: data?.article?.title || data?.embed?.title || "",
-      text: data?.text,
-      html: data?.html,
-      image: data?.article?.image || data?.embed?.thumbnail_url,
-      description: data?.article?.description || data?.embed?.text,
-      articleData: data?.article,
-      embedData: data?.embed,
-    };
+
+    if (!data.bookmark) {
+      throw new Error("Bookmark is required to save");
+    }
+
     let bookmarkApi = createBookmarksApi(
       gqlClient,
       data?.input?.collectionId + ""
     );
-    let newBookmark = await bookmarkApi.saveBookmark(bookmarkInput);
-    data.bookmark = {
-      id: newBookmark?.id,
-      ...bookmarkInput,
+    let bookmarkInput: BookmarksInsertInput = {
+      id: data?.bookmark?.id,
+      collectionId: data.input?.collectionId,
+      url: data.bookmark?.url || data?.input?.url,
+      title: data?.bookmark?.title,
+      text: data?.bookmark?.text,
+      html: data?.bookmark?.html,
+      image: data?.bookmark?.image,
+      description: data?.bookmark?.description,
+      articleData: data?.bookmark?.articleData,
+      embedData: data?.bookmark?.embedData,
     };
+    let newBookmark = await bookmarkApi.saveBookmark(bookmarkInput);
+    data.bookmark.id = newBookmark.id;
+    console.log("DONE SAVING BOOKMARK", newBookmark.id);
   }
 );
 

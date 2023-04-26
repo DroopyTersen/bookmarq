@@ -1,29 +1,38 @@
 import { LoaderArgs } from "@remix-run/node";
-import { JOB_EVENTS } from "~/common/Job";
+import { JOB_EVENTS, JobEventType } from "~/common/Job";
 import { newBookmarkJobRunner } from "~/features/bookmarks/newBookmarkJob.server";
 
+export type ProgressJobData = {
+  bookmark: {
+    title: string;
+    image: string;
+    summary: string;
+  };
+  type: JobEventType;
+  step: string;
+};
 export const loader = ({ request, params }: LoaderArgs) => {
   return eventStream(request.signal, (send) => {
     let unsubscribe = newBookmarkJobRunner.subscribe(
       params.bookmarkId!,
       (event) => {
-        let clientData = {
+        let clientData: ProgressJobData = {
           bookmark: {
-            title:
-              event?.data?.bookmark?.title ||
-              event?.data.article?.title ||
-              event?.data.embed?.title ||
-              "",
-            image: event?.data?.bookmark?.image,
+            title: event?.data?.bookmark?.title || "",
+            image: event?.data?.bookmark?.image || "",
+            summary: "",
           },
           type: event.type,
-          step: event?.step,
+          step: event?.step || "",
         };
         send({
           data: JSON.stringify(clientData),
         });
         if (event.type === JOB_EVENTS.JOB_COMPLETE) {
           console.log("JOB IS DONE. TODO: Close the EventStream?");
+          send({
+            data: "[DONE]",
+          });
         }
       }
     );

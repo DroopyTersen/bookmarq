@@ -56,7 +56,6 @@ export class JobRunner<TJobData = any> {
     jobId = generateUUID()
   ) => {
     this._runJob(initialJobData, jobId);
-    await wait(100);
     return jobId;
   };
   private _runJob = async (jobData: TJobData, jobId: string) => {

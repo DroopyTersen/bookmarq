@@ -46,10 +46,10 @@ export const parseMainArticle = async (html: string, url: string) => {
   const readerResult = reader.parse();
   if (readerResult?.textContent) {
     // remove extra empty lines
-    readerResult.textContent = readerResult.textContent.replace(
-      /\n\s*\n/g,
-      "\n\n"
-    );
+    readerResult.textContent = readerResult.textContent
+      .replace(/\n\s*\n/g, "\n\n")
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">");
   }
   return readerResult;
 };
@@ -132,7 +132,7 @@ const cleanUpCodeBlocks = (doc: HTMLDocument) => {
     // remove all <span> tags
     codeStr = codeStr.replace(/<span[^>]*>/g, "");
     codeStr = codeStr.replace(/<\/span>/g, "");
-
+    codeStr = codeStr.replace(/&amp;/g, `&`).replace(/&quot;/g, `"`);
     // set the new text content of the code element
     codeElement.textContent = codeStr;
     if (language) {
@@ -151,6 +151,9 @@ const cleanUpCodeBlocks = (doc: HTMLDocument) => {
     if (codeElement.tagName === "PRE") {
       // move the PRE content into a CODE element
       const code = doc.createElement("code");
+      // Encode html snippets so they display properly when
+      // rendered as HTML
+
       code.textContent = codeElement.textContent;
       codeElement.innerHTML = "";
       codeElement.appendChild(code as any);

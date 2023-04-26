@@ -1,6 +1,6 @@
 import { ActionArgs, defer, LoaderArgs, redirect } from "@remix-run/node";
-import { Await, Link, useLoaderData } from "@remix-run/react";
-import { Suspense } from "react";
+import { Await, Link, useLoaderData, useParams } from "@remix-run/react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { BsArrowLeftShort, BsTrash } from "react-icons/bs";
 import { JOB_EVENTS } from "~/common/Job";
 import {
@@ -15,6 +15,7 @@ import { newBookmarkJobRunner } from "~/features/bookmarks/newBookmarkJob.server
 import { AppErrorBoundary } from "~/toolkit/components/errors/AppErrorBoundary";
 import { ConfirmationButton } from "~/toolkit/components/modal/ConfirmationButton";
 import { useSearchParam } from "~/toolkit/remix/useSearchParam";
+import { ProgressJobData } from "./progress";
 
 type BookmarkDetails = Awaited<
   ReturnType<ReturnType<typeof createBookmarksApi>["getBookmarkById"]>
@@ -46,14 +47,21 @@ export const loader = async ({ request, params }: LoaderArgs) => {
 export default function () {
   let { fastBookmark, deferredBookmark, isRunningJob } =
     useLoaderData<typeof loader>();
-
+  let [jobData, setJobData] = useState<ProgressJobData | null>(null);
+  let { collectionId, bookmarkId } = useParams();
+  useEventSourceJson<ProgressJobData>(
+    isRunningJob ? `/${collectionId}/${bookmarkId}/progress` : "",
+    (data) => {
+      setJobData(data);
+    }
+  );
   console.log("🚀 | isRunningJob:", isRunningJob);
   return (
     <main className="relative w-full p-2 mx-auto mt-4 shadow-lg bookmark-toolbar md:max-w-3xl bg-base-200 rounded-xl sm:p-4">
       {!isRunningJob ? (
         <BookmarkDisplay bookmark={fastBookmark as any} />
       ) : (
-        <Suspense fallback={<span>Waiting for job...</span>}>
+        <Suspense fallback={<pre>{JSON.stringify(jobData, null, 2)}</pre>}>
           <Await
             resolve={deferredBookmark}
             errorElement={<p>Error loading img!</p>}
@@ -154,4 +162,36 @@ function BookmarkDisplay({ bookmark }: { bookmark: BookmarkDetails }) {
       </div>
     </>
   );
+}
+
+function useEventSourceJson<TData>(
+  path: string,
+  onData: (data: TData) => void
+) {
+  let onDataRef = useRef(onData);
+  useEffect(() => {
+    onDataRef.current = onData;
+  }, [onData]);
+
+  useEffect(() => {
+    if (!path) return;
+    let eventSource = new EventSource(path);
+    eventSource.onmessage = (event) => {
+      if (event?.data === "[DONE]") {
+        console.log("🚀 | Event stream DONE. Closing event source");
+        eventSource.close();
+      } else {
+        try {
+          let data = JSON.parse(event.data);
+          onDataRef.current(data);
+        } catch (err) {
+          console.log("🚀 | unable to parse data", event?.data);
+          eventSource.close();
+        }
+      }
+    };
+    return () => {
+      eventSource.close();
+    };
+  }, [path]);
 }

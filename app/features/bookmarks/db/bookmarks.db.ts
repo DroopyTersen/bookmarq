@@ -30,8 +30,14 @@ export const createBookmarksDBService = (gqlClient: GqlClient) => ({
     return data?.bookmarksAggregate?.aggregate?.count;
   },
   saveBookmark: async (input: BookmarkFullInput) => {
-    let data = await gqlClient.request(SaveBookmarkDocument, { input });
-    return data?.bookmark;
+    console.log("🚀 | saveBookmark: | input:", JSON.stringify(input, null, 2));
+    try {
+      let data = await gqlClient.request(SaveBookmarkDocument, { input });
+      return data?.bookmark;
+    } catch (err) {
+      console.error("saveBookmark err", err);
+      throw err;
+    }
   },
   getBookmarkById: async (bookmarkId: string) => {
     let data = await gqlClient.request(GetBookmarkByIdDocument, {

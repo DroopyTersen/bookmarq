@@ -440,6 +440,10 @@ export type BookmarksAggregate = {
   nodes: Array<Bookmarks>;
 };
 
+export type BookmarksAggregateBoolExp = {
+  count?: InputMaybe<BookmarksAggregateBoolExpCount>;
+};
+
 /** aggregate fields of "bookmarks" */
 export type BookmarksAggregateFields = {
   __typename?: 'BookmarksAggregateFields';
@@ -455,10 +459,24 @@ export type BookmarksAggregateFieldsCountArgs = {
   distinct?: InputMaybe<Scalars['Boolean']>;
 };
 
+/** order by aggregate values of table "bookmarks" */
+export type BookmarksAggregateOrderBy = {
+  count?: InputMaybe<OrderBy>;
+  max?: InputMaybe<BookmarksMaxOrderBy>;
+  min?: InputMaybe<BookmarksMinOrderBy>;
+};
+
 /** append existing jsonb value of filtered columns with new jsonb value */
 export type BookmarksAppendInput = {
   articleData?: InputMaybe<Scalars['jsonb']>;
   embedData?: InputMaybe<Scalars['jsonb']>;
+};
+
+/** input type for inserting array relation for remote table "bookmarks" */
+export type BookmarksArrRelInsertInput = {
+  data: Array<BookmarksInsertInput>;
+  /** upsert condition */
+  onConflict?: InputMaybe<BookmarksOnConflict>;
 };
 
 /** Boolean expression to filter rows from the table "bookmarks". All fields are combined with a logical 'AND'. */
@@ -547,6 +565,21 @@ export type BookmarksMaxFields = {
   url?: Maybe<Scalars['String']>;
 };
 
+/** order by max() on columns of table "bookmarks" */
+export type BookmarksMaxOrderBy = {
+  collectionId?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  createdById?: InputMaybe<OrderBy>;
+  description?: InputMaybe<OrderBy>;
+  html?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  image?: InputMaybe<OrderBy>;
+  text?: InputMaybe<OrderBy>;
+  title?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+  url?: InputMaybe<OrderBy>;
+};
+
 /** aggregate min on columns */
 export type BookmarksMinFields = {
   __typename?: 'BookmarksMinFields';
@@ -561,6 +594,21 @@ export type BookmarksMinFields = {
   title?: Maybe<Scalars['String']>;
   updatedAt?: Maybe<Scalars['timestamptz']>;
   url?: Maybe<Scalars['String']>;
+};
+
+/** order by min() on columns of table "bookmarks" */
+export type BookmarksMinOrderBy = {
+  collectionId?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  createdById?: InputMaybe<OrderBy>;
+  description?: InputMaybe<OrderBy>;
+  html?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  image?: InputMaybe<OrderBy>;
+  text?: InputMaybe<OrderBy>;
+  title?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+  url?: InputMaybe<OrderBy>;
 };
 
 /** response of any mutation on the table "bookmarks" */
@@ -1165,6 +1213,10 @@ export type CollectionRolesUpdates = {
 /** columns and relationships of "collections" */
 export type Collections = {
   __typename?: 'Collections';
+  /** An array relationship */
+  bookmarks: Array<Bookmarks>;
+  /** An aggregate relationship */
+  bookmarksAggregate: BookmarksAggregate;
   createdAt: Scalars['timestamptz'];
   id: Scalars['String'];
   name: Scalars['String'];
@@ -1173,6 +1225,26 @@ export type Collections = {
   /** An aggregate relationship */
   rolesAggregate: CollectionRolesAggregate;
   updatedAt: Scalars['timestamptz'];
+};
+
+
+/** columns and relationships of "collections" */
+export type CollectionsBookmarksArgs = {
+  distinctOn?: InputMaybe<Array<BookmarksSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<BookmarksOrderBy>>;
+  where?: InputMaybe<BookmarksBoolExp>;
+};
+
+
+/** columns and relationships of "collections" */
+export type CollectionsBookmarksAggregateArgs = {
+  distinctOn?: InputMaybe<Array<BookmarksSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<BookmarksOrderBy>>;
+  where?: InputMaybe<BookmarksBoolExp>;
 };
 
 
@@ -1222,6 +1294,8 @@ export type CollectionsBoolExp = {
   _and?: InputMaybe<Array<CollectionsBoolExp>>;
   _not?: InputMaybe<CollectionsBoolExp>;
   _or?: InputMaybe<Array<CollectionsBoolExp>>;
+  bookmarks?: InputMaybe<BookmarksBoolExp>;
+  bookmarksAggregate?: InputMaybe<BookmarksAggregateBoolExp>;
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<StringComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
@@ -1238,6 +1312,7 @@ export enum CollectionsConstraint {
 
 /** input type for inserting data into table "collections" */
 export type CollectionsInsertInput = {
+  bookmarks?: InputMaybe<BookmarksArrRelInsertInput>;
   createdAt?: InputMaybe<Scalars['timestamptz']>;
   id?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
@@ -1288,6 +1363,7 @@ export type CollectionsOnConflict = {
 
 /** Ordering options when selecting data from "collections". */
 export type CollectionsOrderBy = {
+  bookmarksAggregate?: InputMaybe<BookmarksAggregateOrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
@@ -1705,6 +1781,13 @@ export type BookmarkEmbeddingsAggregateBoolExpCount = {
   predicate: IntComparisonExp;
 };
 
+export type BookmarksAggregateBoolExpCount = {
+  arguments?: InputMaybe<Array<BookmarksSelectColumn>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+  filter?: InputMaybe<BookmarksBoolExp>;
+  predicate: IntComparisonExp;
+};
+
 export type CollectionRolesAggregateBoolExpCount = {
   arguments?: InputMaybe<Array<CollectionRolesSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']>;
@@ -2118,9 +2201,9 @@ export type Query_Root = {
   bookmarkEmbeddingsAggregate: BookmarkEmbeddingsAggregate;
   /** fetch data from the table: "bookmark_embeddings" using primary key columns */
   bookmarkEmbeddingsByPk?: Maybe<BookmarkEmbeddings>;
-  /** fetch data from the table: "bookmarks" */
+  /** An array relationship */
   bookmarks: Array<Bookmarks>;
-  /** fetch aggregated fields from the table: "bookmarks" */
+  /** An aggregate relationship */
   bookmarksAggregate: BookmarksAggregate;
   /** fetch data from the table: "bookmarks" using primary key columns */
   bookmarksByPk?: Maybe<Bookmarks>;
@@ -2299,9 +2382,9 @@ export type Subscription_Root = {
   bookmarkEmbeddingsByPk?: Maybe<BookmarkEmbeddings>;
   /** fetch data from the table in a streaming manner: "bookmark_embeddings" */
   bookmarkEmbeddingsStream: Array<BookmarkEmbeddings>;
-  /** fetch data from the table: "bookmarks" */
+  /** An array relationship */
   bookmarks: Array<Bookmarks>;
-  /** fetch aggregated fields from the table: "bookmarks" */
+  /** An aggregate relationship */
   bookmarksAggregate: BookmarksAggregate;
   /** fetch data from the table: "bookmarks" using primary key columns */
   bookmarksByPk?: Maybe<Bookmarks>;

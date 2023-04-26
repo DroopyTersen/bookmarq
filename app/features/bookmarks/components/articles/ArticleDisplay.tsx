@@ -1,3 +1,4 @@
+import hljs from "highlight.js";
 import { useEffect, useRef, useState } from "react";
 import { Img } from "~/toolkit/components/image/Img";
 import { BookmarkDetails } from "../../bookmarks.schema";
@@ -7,14 +8,17 @@ export function ArticleDisplay({ bookmark }: { bookmark?: BookmarkDetails }) {
   let articleRef = useRef<HTMLDivElement | null>(null);
   let [tab, setTab] = useState<"text" | "html">("html");
   useEffect(() => {
-    if (!articleRef.current || !bookmark?.articleData?.html) return;
-    articleRef.current.innerHTML = bookmark?.articleData?.html || "";
-    // hljs.highlightAll();
+    if (!articleRef.current || !bookmark?.html) return;
+    let encodedHtml = (bookmark?.html || "")
+      .replace(/&amp;lt;/g, "&lt;")
+      .replace(/&amp;gt;/g, "&gt;");
+    articleRef.current.innerHTML = encodedHtml;
+    hljs.highlightAll();
     document.querySelectorAll("pre").forEach((pre: HTMLPreElement) => {
       // pre.contentEditable = "true";
       // pre.spellcheck = false;
     });
-  }, [bookmark?.articleData?.html]);
+  }, [bookmark?.html]);
   return (
     <>
       {bookmark?.image && (
